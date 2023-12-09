@@ -2,6 +2,6 @@
 
 ##### Latest updates as screenshoots:
 <p>
-<img src="./erd-book-show.jpg" alt="db-erd" /> 
+<img src="./db-design-erd.jpg" alt="db-erd" /> 
 </p>
 
