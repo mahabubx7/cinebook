@@ -98,9 +98,16 @@ export class UserService {
   /**
    * Remove a user
    * @param   id number
-   * @returns Promise<any[]>
+   * @returns Promise<boolean>
    */
   public async delete(id: number) {
-    return this.model.query().where('id', id).delete()
+    await this.model
+      .query()
+      .where('id', id)
+      .update({ isDeleted: true })
+      .catch((err) => {
+        throw new Error(err)
+      })
+    return true
   }
 }

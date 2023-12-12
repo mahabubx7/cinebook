@@ -7,21 +7,42 @@ export default class Theater extends BaseModel {
   public id: number
 
   @column()
+  public uid: string
+
+  @column({ serializeAs: null })
+  // @no-swagger
+  public isDeleted: boolean
+
+  @column()
   public name: string
+
+  @column()
+  public vendorId: number
+
+  @column()
+  public typeId: number
 
   @column()
   public address: string
 
-  @column({
-    prepare: (value?: string) => {
-      return value ? Database.st().geomFromText(value, 4326) : value
-    },
-  })
-  public location: string
+  @column()
+  public location: any
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  public static get computed() {
+    return ['latitude', 'longitude']
+  }
+
+  public getLatitude({ location }) {
+    return location.coordinates[0]
+  }
+
+  public getLongitude({ location }) {
+    return location.coordinates[1]
+  }
 }
