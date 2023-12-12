@@ -39,9 +39,8 @@ export default class Service extends BaseCommand {
   }
 
   public async run() {
-    this.name = this.name + 'Service'
     // pre-check for duplicate
-    if (fs.existsSync(join(this.application.appRoot, `app/Services/${this.name}.ts`))) {
+    if (fs.existsSync(join(this.application.appRoot, `app/Services/${this.name}Service.ts`))) {
       this.logger.error(`❌ ${this.name} service class already exists.`)
       return
     }
@@ -68,9 +67,10 @@ export default class Service extends BaseCommand {
        * Ask user to enter the addon name.
        */
       const addon = await this.prompt.ask('Enter the addon name (start with capital):', {
-        default: this.name,
+        default: this.name + 'Service',
         result: (value) => value.trim(),
       })
+      this.name = this.name + 'Service'
       this.generator
         .addFile(this.name, {
           extname: '.ts',
@@ -104,6 +104,7 @@ export default class Service extends BaseCommand {
         default: this.name,
         result: (value) => value.trim(),
       })
+      this.name = this.name + 'Service'
       // generate the service class file
       this.generator
         .addFile(this.name, {

@@ -10,9 +10,8 @@
 
 export enum Role {
   USER = 'user',
-  // VENDOR = 'vendor', // 'vendor' is good for multi-vendor based applications
-  AUDITOR = 'auditor',
-  // MANAGER = 'manager',
+  VENDOR = 'vendor', // VENDOR
+  MANAGER = 'manager', // (platform) Manager
   ADMIN = 'admin',
   SUPER_ADMIN = 'super_admin', // above all
 }
