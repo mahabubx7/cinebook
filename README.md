@@ -1,23 +1,36 @@
-# AdonisJs (api-only)
+# CineBook - Theater's online ticket booking
 
-### REST-API starter with AdonisJS (v5) + PostgreSQL
+### Backend API - AdonisJs (v5) + PostgreSQL
 
-- Proper authentication with basic/normal examples ✅
-- Email with SMTP ✅ & `mjml` + `edge` for email-templating
-- Service generator ✅ @custom using `@adonisjs` core/command tool
-- Token based (`Opaque`) ✅ for API authentication
-- OTP ✅ for email verification & others
-- Authorization ✅ using `@adonisjs/bouncer` with Todo CRUD + Policy-based access-controls
-- Swagger API docs ✅ implementation with `autogen-swagger` from adonisjs-community-packages
-- ✅ Write completed Tests for `Unit` & `Integration` (named as 'functional').
-- ⌛Compose with `docker-compose.yml` with additional containers
-- ⌛Use `@adonisjs/driver-s3` as file storage like `aws-s3` or `MinIO`
-- ⌛(OPTIONAL): Integrate with BullMQ or Bull for Queue instead of InMemory-Adonis-Queue for sending emails
-- ⌛(OPTIONAL): Implement query caching with redis + adonis/lucid-orm internals (if possible)
+> This is only the backend application to serve the server-side logics and processed APIs to the client applications like website or mobile apps.
 
-##### Latest updates as screenshoots:
+##### Database Diagram `ERD` [initial]
 
-<p>
-  <img width="240" align="left" src="https://github.com/mahabubx7/adonis-api-starter/assets/122348996/98fe1d4d-1a93-4f45-8f07-b7bed2020f96" alt="email-ss" />
-  <img width="560" align="left" src="https://github.com/mahabubx7/adonis-api-starter/assets/122348996/5ad17ee9-1f8d-4ae4-b187-6a9fb6b9132e" alt="api-doc-ss" />
-</p>
+![erd](./erd.jpg)
+
+###### Motivation
+
+When I was preparing myself and trying to make some good portfolios that can make impressions, I thought about many like e-commerce, rental, and some others as quite popular among new developers like me.
+
+Later I decided to make some little & unique things from others to make a small difference. Then I choose this idea. Because, its quite different from any regular new developers portfolio showcase.
+
+###### More information
+
+This application serves `JSON` API only. I'm using a very good node.js based framework called `AdonisJs` and `PostgreSQL` database for this.
+
+```yml
+Runtime: Nodejs (>= 18.x) :: LTS preferred
+Framework: AdonisJs (v5)
+Databases: [
+  PostgreSQL,
+  Redis,
+]
+DbDriver: Lucid ORM (knex.js)
+TypeSafe: YES <TypeScript>
+Authentication: @adonisjs/auth
+Authorization: @adonisjs/bouncer (policy)
+Email: @adonisjs/mailer (smtp) + mjml
+
+```
+
+> Note: This is a portfolio or prototype based backend api based application with NodeJs-stack. For more info, please contact me @mahabubx7 [`iosmahabub@gmail.com`]
