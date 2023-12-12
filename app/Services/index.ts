@@ -18,3 +18,17 @@ export * from './MailService'
 export * from './TokenService'
 
 export * from './TodoService'
+
+export * from './MovieService'
+
+export * from './TheaterService'
+
+export * from './AuditoriumService'
+
+export * from './ScreeningService'
+
+export * from './SeatService'
+
+export * from './BookingService'
+
+export * from './TicketService'
