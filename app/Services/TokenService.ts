@@ -51,4 +51,12 @@ export class TokenService {
     await Redis.del(key)
     return await JSON.parse(payload)
   }
+
+  public static slugify(text: string, len: number = 8) {
+    const txt = text.toLowerCase().replace(/[^a-z]+/g, '-')
+    const uKey = Math.random()
+      .toString(36)
+      .substring(2, len + 2)
+    return `${txt}-${uKey}`
+  }
 }

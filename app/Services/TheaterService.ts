@@ -27,13 +27,15 @@ export class TheaterService {
   /**
    * Get one by id
    * @param id number
+   * @parsed location GeoJSON <PostGIS>
+   * @includes TheaterType, User<Owner>
    * @returns Promise<Theater | null>
    */
   public async getById(id: number) {
     const theater = await this.model
       .query()
       .where('id', id)
-      .select('id', 'name', 'address', 'vendor_id', 'type_id', Database.st().asGeoJSON('location'))
+      .select('*', Database.st().asGeoJSON('location'))
       .first()
     if (!theater) return null
     theater.location = JSON.parse(theater.location)
