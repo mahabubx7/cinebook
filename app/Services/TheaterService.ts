@@ -9,6 +9,7 @@
 |
 |*/
 
+import Database from '@ioc:Adonis/Lucid/Database'
 import Theater from 'App/Models/Theater'
 
 export class TheaterService {
@@ -26,10 +27,19 @@ export class TheaterService {
   /**
    * Get one by id
    * @param id number
-   * @returns Promise<Theater>
+   * @returns Promise<Theater | null>
    */
   public async getById(id: number) {
-    return this.model.findOrFail(id)
+    const theater = await this.model
+      .query()
+      .where('id', id)
+      .select('id', 'name', 'address', 'vendor_id', 'type_id', Database.st().asGeoJSON('location'))
+      .first()
+    if (!theater) return null
+    theater.location = JSON.parse(theater.location)
+    await theater.load('type', (query) => query.select('id', 'name'))
+    await theater.load('owner', (query) => query.select('id', 'email'))
+    return theater
   }
 
   /**

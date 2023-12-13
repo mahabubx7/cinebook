@@ -55,5 +55,5 @@ export const { actions } = Bouncer
 |****************************************************************
 */
 export const { policies } = Bouncer.registerPolicies({
-  TodoPolicy: () => import('App/Policies/TodoPolicy'), // <--- Todo :: Access Policy
+  // TodoPolicy: () => import('App/Policies/TodoPolicy'), // <--- Todo :: Access Policy
 })

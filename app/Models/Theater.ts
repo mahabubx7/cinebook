@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import User from './User'
+import TheaterType from './TheaterType'
 import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class Theater extends BaseModel {
@@ -16,10 +18,12 @@ export default class Theater extends BaseModel {
   @column()
   public name: string
 
-  @column()
+  @column({ serializeAs: null })
+  // @no-swagger
   public vendorId: number
 
-  @column()
+  @column({ serializeAs: null })
+  // @no-swagger
   public typeId: number
 
   @column()
@@ -34,15 +38,9 @@ export default class Theater extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  public static get computed() {
-    return ['latitude', 'longitude']
-  }
+  @belongsTo(() => User, { foreignKey: 'vendorId' })
+  public owner: BelongsTo<typeof User>
 
-  public getLatitude({ location }) {
-    return location.coordinates[0]
-  }
-
-  public getLongitude({ location }) {
-    return location.coordinates[1]
-  }
+  @belongsTo(() => TheaterType, { foreignKey: 'typeId' })
+  public type: BelongsTo<typeof TheaterType>
 }
