@@ -1,7 +1,7 @@
 import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class UpdateTodoDto {
+export default class CreateTheaterDto {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,9 +24,12 @@ export default class UpdateTodoDto {
    *    ```
    */
   public schema = schema.create({
-    title: schema.string.optional({ trim: true }, [rules.maxLength(100)]),
-    description: schema.string.optional({ trim: true }, [rules.maxLength(255)]),
-    isCompleted: schema.boolean.optional(),
+    name: schema.string({ trim: true }, [rules.maxLength(120)]),
+    address: schema.string({ trim: true }, [rules.maxLength(255)]),
+    coordinates: schema.array
+      .optional([rules.maxLength(2), rules.minLength(2)])
+      .members(schema.number()),
+    type: schema.number.optional(),
   })
 
   /**

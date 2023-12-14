@@ -7,6 +7,8 @@
 
 ##### Database Diagram `ERD` [initial]
 
+> Corrections are coming soon.
+
 ![erd](./erd.jpg)
 
 ###### Motivation
@@ -23,15 +25,17 @@ This application serves `JSON` API only. I'm using a very good node.js based fra
 Runtime: Nodejs (>= 18.x) :: LTS preferred
 Framework: AdonisJs (v5)
 Databases: [
-  PostgreSQL,
-  Redis,
+  PostgreSQL, # As primary database
+  Redis, # As system data helper
 ]
 DbDriver: Lucid ORM (knex.js)
 TypeSafe: YES <TypeScript>
 Authentication: @adonisjs/auth
 Authorization: @adonisjs/bouncer (policy)
 Email: @adonisjs/mailer (smtp) + mjml
-
+Docs: Swagger (OpenApi v3)
+Test: @japa # adonisjs uses Japa
+Storage: @adonisjs/drive-s3 # MinIO or AWS S3
 ```
 
 > Note: This is a portfolio or prototype based backend api based application with NodeJs-stack. For more info, please contact me @mahabubx7 [`iosmahabub@gmail.com`]

@@ -5,7 +5,6 @@
 */
 
 import { FakeMailManagerContract } from '@ioc:Adonis/Addons/Mail'
-import Api from '@japa/runner'
 
 /**
  * Extract the OTP from the (fake) mailer

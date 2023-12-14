@@ -5,6 +5,13 @@ export default class Ticket extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public uid: string
+
+  @column({ serializeAs: null })
+  // @no-swagger
+  public isDeleted: boolean
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

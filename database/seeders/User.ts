@@ -1,5 +1,6 @@
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import User from 'App/Models/User'
+import Logger from '@ioc:Adonis/Core/Logger'
 
 export default class extends BaseSeeder {
   public async run() {
@@ -11,17 +12,25 @@ export default class extends BaseSeeder {
         isEmailVerified: true,
       },
       {
-        email: 'test@auditor.com',
+        email: 'test@vendor.com',
         password: '12345678',
-        role: 'auditor', // auditor
+        role: 'vendor', // vendor
+        isEmailVerified: true,
+      },
+      {
+        email: 'test@manager.com',
+        password: '12345678',
+        role: 'manager', // manager
         isEmailVerified: true,
       },
       {
         email: 'test@admin.com',
-        password: 'admin',
+        password: '12345678',
         role: 'admin', // admin
         isEmailVerified: true,
       },
-    ])
+    ]).then(() => {
+      Logger.info('✅ Seeding Users are completed!')
+    })
   }
 }

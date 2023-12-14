@@ -1,8 +1,7 @@
 import Hash from '@ioc:Adonis/Core/Hash'
 import { DateTime } from 'luxon'
-import { BaseModel, HasMany, beforeSave, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
 import { Role } from 'App/Enums'
-import Todo from './Todo'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -22,12 +21,8 @@ export default class User extends BaseModel {
   public isEmailVerified?: boolean
 
   @column()
-  // @enum(user, auditor, admin, super_admin)
+  // @enum(user, vendor, manager, admin, super_admin)
   public role: string
-
-  // has-many relation: Todo[]
-  @hasMany(() => Todo)
-  public todos: HasMany<typeof Todo>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -55,10 +50,16 @@ export default class User extends BaseModel {
     return this.role === Role.ADMIN
   }
 
-  // check if user is AUDITOR
+  // check if user is VENDOR
   // @no-swagger
-  public get isAuditor() {
-    return this.role === Role.AUDITOR
+  public get isVendor() {
+    return this.role === Role.VENDOR
+  }
+
+  // check if user is Manager
+  // @no-swagger
+  public get isManager() {
+    return this.role === Role.MANAGER
   }
 
   // check if user is SUPER . ADMIN

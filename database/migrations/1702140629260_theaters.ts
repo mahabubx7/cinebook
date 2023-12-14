@@ -11,7 +11,7 @@ export default class extends BaseSchema {
       table.integer('type_id').notNullable().unsigned().references('id').inTable('theater_types')
       table.string('name').notNullable()
       table.string('address').notNullable()
-      table.string('location').notNullable() // geo location
+      table.geometry('location').nullable() // geo location
       table.boolean('is_deleted').defaultTo(false)
 
       /**
