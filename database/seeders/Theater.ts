@@ -25,12 +25,6 @@ export default class extends BaseSeeder {
         uid: 'cineplex-dhaka',
         typeId: 2,
         location: Database.st().geomFromText('Point(23.746466 90.376015)', 4326),
-        // location: Database.st().geomFromText('Point(23.746466 90.376015)', 4326),
-        // location: 'Point(23.746466 90.376015)',
-        // location: {
-        //   type: 'Point',
-        //   coordinates: [23.746466, 90.376015],
-        // },
       },
       {
         name: 'Cineplex Khulna',
@@ -39,12 +33,6 @@ export default class extends BaseSeeder {
         typeId: 1,
         vendorId: 2,
         location: Database.st().geomFromText('Point(22.845641 89.540328)', 4326),
-        // location: {
-        //   type: 'Point',
-        //   coordinates: [22.845641, 89.540328],
-        // },
-        // location: Database.st().geomFromText('Point(22.845641 89.540328)', 4326),
-        // location: 'Point(22.845641 89.540328)',
       },
     ]).then(() => {
       Logger.info('✅ Seeding Theaters are completed!')
