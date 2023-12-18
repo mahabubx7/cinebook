@@ -1,7 +1,7 @@
 import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class RegisterInputValidator {
+export default class CreateVendorDto {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,10 +24,11 @@ export default class RegisterInputValidator {
    *    ```
    */
   public schema = schema.create({
-    fname: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
-    middle: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
-    lname: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
     email: schema.string([rules.email()]),
+    fname: schema.string([rules.minLength(3), rules.maxLength(24)]),
+    middle: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
+    phone: schema.string.optional([rules.mobile()]),
+    lname: schema.string([rules.minLength(3), rules.maxLength(24)]),
     password: schema.string([rules.minLength(8), rules.maxLength(64), rules.confirmed()]),
   })
 

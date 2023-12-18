@@ -28,3 +28,5 @@ export * from './ScreeningService'
 export * from './BookingService'
 
 export * from './TicketService'
+
+export * from './VendorService'
