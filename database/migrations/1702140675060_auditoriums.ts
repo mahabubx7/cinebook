@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.string('uid').notNullable().unique()
       table.integer('theater_id').notNullable().unsigned().references('id').inTable('theaters')
       table.string('name').notNullable()
-      table.integer('capacity').notNullable()
+      table.integer('capacity').defaultTo(50)
       table.boolean('is_deleted').defaultTo(false)
 
       /**

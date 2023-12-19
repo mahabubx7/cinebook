@@ -4,4 +4,5 @@ Route.group(() => {
   require('./auth') // <--- Auth routes
   require('./theater') // <--- Theater routes
   require('./vendor') // <--- Vendor routes
+  require('./auditorium') // <--- Auditorium routes
 }).prefix('v1') // <--- API version prefix [version (1)]

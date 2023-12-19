@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, beforeCreate, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { TokenService } from 'App/Services'
+import Theater from './Theater'
 
 export default class Auditorium extends BaseModel {
   @column({ isPrimary: true })
@@ -26,4 +28,12 @@ export default class Auditorium extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeCreate()
+  public static async generateUid(auditorium: Auditorium) {
+    auditorium.uid = this.name.toLowerCase() + '--' + TokenService.UID(16)
+  }
+
+  @belongsTo(() => Theater, { foreignKey: 'theaterId' })
+  public theater: BelongsTo<typeof Theater>
 }

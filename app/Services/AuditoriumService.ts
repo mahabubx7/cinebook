@@ -9,6 +9,7 @@
 |
 |*/
 
+import Database from '@ioc:Adonis/Lucid/Database'
 import Auditorium from 'App/Models/Auditorium'
 
 export class AuditoriumService {
@@ -26,10 +27,66 @@ export class AuditoriumService {
   /**
    * Get one by id
    * @param id number
-   * @returns Promise<Auditorium>
+   * @returns Promise<Auditorium | null>
+   * @includes Theater
    */
   public async getById(id: number) {
-    return this.model.findOrFail(id)
+    let auditorium = await this.model
+      .query()
+      .where('id', id)
+      .preload('theater', async (query) => {
+        await query.select('*', Database.st().asGeoJSON('location'))
+      })
+      .first()
+
+    if (auditorium) {
+      auditorium.theater.location = JSON.parse(auditorium.theater.location)
+    }
+
+    return auditorium
+  }
+
+  /**
+   * Get one by id (UID)
+   * @param uid string
+   * @returns Promise<Auditorium | null>
+   * @includes Theater
+   */
+  public async getByUid(uid: string) {
+    let auditorium = await this.model
+      .query()
+      .where('uid', uid)
+      .preload('theater', async (query) => {
+        await query.select('*', Database.st().asGeoJSON('location'))
+      })
+      .first()
+
+    if (auditorium) {
+      auditorium.theater.location = JSON.parse(auditorium.theater.location)
+    }
+
+    return auditorium
+  }
+
+  /**
+   * Get list by Theater (id)
+   * @param id number
+   * @returns Promise<Auditorium[]>
+   */
+  public async getListByTheater(theaterId: number) {
+    let auditoriums = await this.model
+      .query()
+      .where('is_deleted', false)
+      .where('theater_id', theaterId)
+      .preload('theater', async (query) => {
+        await query.select('*', Database.st().asGeoJSON('location'))
+      })
+
+    auditoriums.forEach(async (item) => {
+      item.theater.location = await JSON.parse(item.theater.location)
+    })
+
+    return auditoriums
   }
 
   /**
@@ -39,7 +96,12 @@ export class AuditoriumService {
    * @returns Promise<any[]>
    */
   public async update(id: number, payload: Partial<Auditorium>) {
-    return this.model.query().where('id', id).update(payload)
+    return this.model
+      .query()
+      .where('id', id)
+      .update(payload)
+      .then(() => true)
+      .catch(() => false)
   }
 
   /**
@@ -48,6 +110,11 @@ export class AuditoriumService {
    * @returns Promise<any[]>
    */
   public async delete(id: number) {
-    return this.model.query().where('id', id).delete()
+    return this.model
+      .query()
+      .where('id', id)
+      .update({ isDeleted: true })
+      .then(() => true)
+      .catch(() => false)
   }
 }

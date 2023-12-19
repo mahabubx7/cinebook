@@ -9,5 +9,6 @@ export default class extends BaseSeeder {
     // Write your database queries inside the run method
     await this.runSeeder(await import('../User')) // <--- User (Public/Vendor/Admin/etc.)
     await this.runSeeder(await import('../Theater')) // <--- Theater
+    await this.runSeeder(await import('../Auditorium')) // <--- Auditorium
   }
 }
