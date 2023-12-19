@@ -5,4 +5,6 @@ Route.group(() => {
   require('./theater') // <--- Theater routes
   require('./vendor') // <--- Vendor routes
   require('./auditorium') // <--- Auditorium routes
+  require('./movie') // <--- Movie routes
+  require('./screen') // <--- Screening routes
 }).prefix('v1') // <--- API version prefix [version (1)]

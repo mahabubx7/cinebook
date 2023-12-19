@@ -26,10 +26,29 @@ export class MovieService {
   /**
    * Get one by id
    * @param id number
-   * @returns Promise<Movie>
+   * @returns Promise<Movie | null>
    */
   public async getById(id: number) {
-    return this.model.findOrFail(id)
+    return this.model.query().where('id', id).preload('screens').first()
+  }
+
+  /**
+   * Get one by id (UID)
+   * @param uid string
+   * @returns Promise<Movie | null>
+   */
+  public async getByUid(uid: string) {
+    return this.model.query().where('uid', uid).preload('screens').first()
+  }
+
+  /**
+   * Get List (latest first)
+   * @param pageLimit number (default: 10)
+   * @param page number (default: 1)
+   * @returns Promise<Movie[]> (paginated)
+   */
+  public async getList({ page = 1, pageLimit = 10 }: { page?: number; pageLimit?: number } = {}) {
+    return this.model.query().preload('screens').paginate(page, pageLimit)
   }
 
   /**
@@ -39,7 +58,12 @@ export class MovieService {
    * @returns Promise<any[]>
    */
   public async update(id: number, payload: Partial<Movie>) {
-    return this.model.query().where('id', id).update(payload)
+    return this.model
+      .query()
+      .where('id', id)
+      .update(payload)
+      .then(() => true)
+      .catch(() => false)
   }
 
   /**
@@ -48,6 +72,11 @@ export class MovieService {
    * @returns Promise<any[]>
    */
   public async delete(id: number) {
-    return this.model.query().where('id', id).delete()
+    return this.model
+      .query()
+      .where('id', id)
+      .update({ isDeleted: true })
+      .then(() => true)
+      .catch(() => false)
   }
 }
