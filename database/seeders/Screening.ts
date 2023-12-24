@@ -65,7 +65,35 @@ export default class extends BaseSeeder {
       .multiInsert([
         {
           screening_id: 1,
-          auditorium_id: 1,
+          auditorium_id: 5,
+          price: 99.99,
+          starts_at: '2023-12-01',
+          ends_at: '2024-01-01',
+        },
+        {
+          screening_id: 2,
+          auditorium_id: 5,
+          price: 99.99,
+          starts_at: '2023-12-01',
+          ends_at: '2024-01-01',
+        },
+        {
+          screening_id: 3,
+          auditorium_id: 5,
+          price: 99.99,
+          starts_at: '2023-12-01',
+          ends_at: '2024-01-01',
+        },
+        {
+          screening_id: 4,
+          auditorium_id: 5,
+          price: 99.99,
+          starts_at: '2023-12-01',
+          ends_at: '2024-01-01',
+        },
+        {
+          screening_id: 5,
+          auditorium_id: 5,
           price: 99.99,
           starts_at: '2023-12-01',
           ends_at: '2024-01-01',

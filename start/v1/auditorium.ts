@@ -6,6 +6,7 @@ Route.group(() => {
   Route.put('/:id', 'AuditoriumsController.update')
   Route.delete('/:id', 'AuditoriumsController.destroy')
   Route.get('/screen', 'AuditoriumsController.getByShow')
+  Route.get('/seats', 'AuditoriumsController.getSeats')
   Route.get('/uid/:uid', 'AuditoriumsController.show')
   Route.get('/:id', 'AuditoriumsController.getById')
   Route.get('/', 'AuditoriumsController.index')

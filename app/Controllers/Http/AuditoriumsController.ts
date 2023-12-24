@@ -57,6 +57,17 @@ export default class AuditoriumsController {
     return response.ok(auditoriums)
   }
 
+  public async getSeats({ response, request }: HttpContextContract) {
+    const { showId, auditoriumId, date } = request.qs()
+    if (!showId || !auditoriumId || !date) {
+      return response.unprocessableEntity({
+        message: 'Show, Theater and Date are required',
+      })
+    }
+    const seats = await this.service.getSeats(auditoriumId, showId, date)
+    response.ok(seats)
+  }
+
   public async update({ request, response, params }: HttpContextContract) {
     const payload = await request.validate(UpdateAuditoriumDto)
     const auditorium = await this.service.update(params.id, payload)

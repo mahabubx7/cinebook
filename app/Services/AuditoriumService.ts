@@ -168,4 +168,28 @@ export class AuditoriumService {
       })
     return auditoriums
   }
+
+  // get seats information
+  public async getSeats(auditoriumId: number, screeningId: number, date: string) {
+    const auditorium = await this.model.find(auditoriumId)
+    const show = await Database.query().from('screenings').where('id', screeningId).first()
+    if (!auditorium || !show) return null
+    const seatCounts = auditorium.capacity
+    const seats: Record<string, any>[] = []
+    for (let i = 1; i <= seatCounts; i++) {
+      const seat = await Database.query()
+        .from('bookings')
+        .where('auditorium_id', auditoriumId)
+        .where('show_id', screeningId)
+        .where('date', date)
+        .where('seat_number', i)
+        .first()
+
+      seats.push({
+        seat_number: i,
+        status: seat ? seat.status : 'available',
+      })
+    }
+    return seats
+  }
 }

@@ -12,5 +12,6 @@ export default class extends BaseSeeder {
     await this.runSeeder(await import('../Auditorium')) // <--- Auditorium
     await this.runSeeder(await import('../Movie')) // <--- Movie
     await this.runSeeder(await import('../Screening')) // <--- Screening
+    await this.runSeeder(await import('../Booking')) // <--- Booking
   }
 }
