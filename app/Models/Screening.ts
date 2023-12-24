@@ -13,6 +13,7 @@ import { TokenService } from 'App/Services/TokenService'
 import Movie from './Movie'
 import Theater from './Theater'
 import CustomException from 'App/Exceptions/CustomException'
+import Auditorium from './Auditorium'
 
 export default class Screening extends BaseModel {
   @column({ isPrimary: true })
@@ -64,12 +65,12 @@ export default class Screening extends BaseModel {
   @belongsTo(() => Theater, { foreignKey: 'theaterId' })
   public theater: BelongsTo<typeof Theater>
 
-  @manyToMany(() => Screening, {
+  @manyToMany(() => Auditorium, {
     pivotTable: 'screen_auditoriums',
     pivotTimestamps: true,
     pivotColumns: ['starts_at', 'ends_at', 'price'],
   })
-  public auditoriums: ManyToMany<typeof Screening>
+  public auditoriums: ManyToMany<typeof Auditorium>
 
   @beforeCreate()
   public static async generateUid(screening: Screening) {

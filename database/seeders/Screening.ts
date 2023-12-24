@@ -1,6 +1,7 @@
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import Screening from 'App/Models/Screening'
 import Logger from '@ioc:Adonis/Core/Logger'
+import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class extends BaseSeeder {
   public async run() {
@@ -58,5 +59,20 @@ export default class extends BaseSeeder {
     ]).then(() => {
       Logger.info('✅ Seeding Screenings are completed!')
     })
+
+    // attach to auditoriums
+    await Database.table('screen_auditoriums')
+      .multiInsert([
+        {
+          screening_id: 1,
+          auditorium_id: 1,
+          price: 99.99,
+          starts_at: '2023-12-01',
+          ends_at: '2024-01-01',
+        },
+      ])
+      .then(() => {
+        Logger.info('✅ Seeding Screenings attached to Auditorium is completed!')
+      })
   }
 }

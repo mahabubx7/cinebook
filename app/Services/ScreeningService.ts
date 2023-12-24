@@ -112,6 +112,29 @@ export class ScreeningService {
     return screens
   }
 
+  // get auditoriums by shows and includes pivot data
+  public async getShowsWithAuditoriums(screeningId: number) {
+    const show = await this.model.find(screeningId)
+    if (!show) return null
+    const auditoriums = await Database.query()
+      .from('screen_auditoriums')
+      .where('screening_id', screeningId)
+      .leftJoin('auditoriums', 'auditoriums.id', 'screen_auditoriums.auditorium_id')
+      .select(
+        'auditoriums.id',
+        'auditoriums.name',
+        'auditoriums.uid',
+        'auditoriums.capacity',
+        'screen_auditoriums.price',
+        'screen_auditoriums.starts_at',
+        'screen_auditoriums.ends_at',
+        'auditoriums.created_at',
+        'auditoriums.updated_at'
+      )
+
+    return { show, auditoriums }
+  }
+
   /**
    * Update a Screening
    * @param id number

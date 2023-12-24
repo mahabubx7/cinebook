@@ -28,7 +28,7 @@ C -- Choose a show GET: /screen/shows?movieId=X&theaterId=Y --> D[Array :: Shows
 
 ```mermaid
 flowchart TD
-A[Request GET: /auditorium?theaterId=X&showId=Y] --> B[Array :: Auditoriums];
+A[Request GET: /screen/show/:id] --> B[Object :: Show : includes auditoriums with related info];
 B -- Select an Auditorium GET: /auditorium/:id --> C[Object :: Auditorium info includes capacity of seats & more];
 C -- Selects seats & make booking POST: /booking  --> D[Process :: BookingDto into a booking record with validations];
 E(Seat Booking process ends);
