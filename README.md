@@ -22,7 +22,6 @@ A[Request GET: `/movie`] --> B[Array :: of Movies : includes theater that runnin
 B -- Select a `Theater` GET: /theater/:id --> C[Object :: Theater : includes screenings, required query movieId];
 
 C -- Choose a show GET: /screen/shows?movieId=X&theaterId=Y --> D[Array :: Shows including movie & theater info];
-
 ```
 
 **Book a seat for the selected show**
@@ -32,9 +31,9 @@ flowchart TD
 A[Request GET: /auditorium?theaterId=X&showId=Y] --> B[Array :: Auditoriums];
 B -- Select an Auditorium GET: /auditorium/:id --> C[Object :: Auditorium info includes capacity of seats & more];
 C -- Selects seats & make booking POST: /booking  --> D[Process :: BookingDto into a booking record with validations];
-D -- :[ Accepted ]: --> E;
-D -- :[ Declined ]: --> E;
 E(Seat Booking process ends);
+D --  Accepted  --> E;
+D --  Declined  --> E;
 ```
 
 **Some necessary hints**
