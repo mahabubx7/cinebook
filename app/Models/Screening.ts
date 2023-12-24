@@ -2,13 +2,17 @@ import { DateTime } from 'luxon'
 import {
   BaseModel,
   BelongsTo,
+  ManyToMany,
   beforeCreate,
   beforeSave,
   belongsTo,
   column,
+  manyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import { TokenService } from 'App/Services/TokenService'
 import Movie from './Movie'
+import Theater from './Theater'
+import CustomException from 'App/Exceptions/CustomException'
 
 export default class Screening extends BaseModel {
   @column({ isPrimary: true })
@@ -21,6 +25,9 @@ export default class Screening extends BaseModel {
   public movieId: number
 
   @column()
+  public theaterId: number
+
+  @column()
   public name: string
 
   @column()
@@ -31,6 +38,15 @@ export default class Screening extends BaseModel {
 
   @column()
   public endTime: string
+
+  @column()
+  public bookingStartDate: string
+
+  @column()
+  public screeningOpenAt: string
+
+  @column()
+  public screeningEndAt: string
 
   @column({ serializeAs: null })
   // @no-swagger
@@ -45,6 +61,16 @@ export default class Screening extends BaseModel {
   @belongsTo(() => Movie, { foreignKey: 'movieId' })
   public movie: BelongsTo<typeof Movie>
 
+  @belongsTo(() => Theater, { foreignKey: 'theaterId' })
+  public theater: BelongsTo<typeof Theater>
+
+  @manyToMany(() => Screening, {
+    pivotTable: 'screen_auditoriums',
+    pivotTimestamps: true,
+    pivotColumns: ['starts_at', 'ends_at', 'price'],
+  })
+  public auditoriums: ManyToMany<typeof Screening>
+
   @beforeCreate()
   public static async generateUid(screening: Screening) {
     screening.uid = 'scr' + '--' + TokenService.UID(16)
@@ -52,9 +78,10 @@ export default class Screening extends BaseModel {
 
   @beforeSave()
   public static async checkTimeOverlapping(screening: Screening) {
-    const { movieId, startTime, endTime } = screening
+    const { movieId, theaterId, startTime, endTime } = screening
     const haveConflicts = await Screening.query()
       .where('movieId', movieId)
+      .andWhere('theaterId', theaterId)
       .andWhereRaw(
         `
       (
@@ -66,6 +93,8 @@ export default class Screening extends BaseModel {
         [endTime, startTime, startTime, endTime]
       )
       .first()
-    if (haveConflicts) throw new Error('Screening time is overlapping with another screening!')
+    if (haveConflicts) {
+      throw new CustomException('Time slot is overlapping', 409)
+    }
   }
 }

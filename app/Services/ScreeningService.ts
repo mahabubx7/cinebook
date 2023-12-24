@@ -9,6 +9,7 @@
 |
 |*/
 
+import Database from '@ioc:Adonis/Lucid/Database'
 import Screening from 'App/Models/Screening'
 
 export class ScreeningService {
@@ -29,7 +30,18 @@ export class ScreeningService {
    * @returns Promise<Screening | null>
    */
   public async getById(id: number) {
-    return this.model.query().where('id', id).preload('movie').first()
+    const screen = await this.model
+      .query()
+      .where('id', id)
+      .preload('movie')
+      .preload('theater', async (query) => {
+        await query.select('*', Database.st().asGeoJSON('location'))
+      })
+      .first()
+
+    if (!screen) return null
+    screen.theater.location = await JSON.parse(screen.theater.location)
+    return screen
   }
 
   /**
@@ -38,7 +50,43 @@ export class ScreeningService {
    * @returns Promise<Screening | null>
    */
   public async getByUid(uid: string) {
-    return this.model.query().where('uid', uid).preload('movie').first()
+    const screen = await this.model
+      .query()
+      .where('uid', uid)
+      .preload('movie')
+      .preload('theater', async (query) => {
+        await query.select('*', Database.st().asGeoJSON('location'))
+      })
+      .first()
+
+    if (!screen) return null
+    screen.theater.location = await JSON.parse(screen.theater.location)
+    return screen
+  }
+
+  /**
+   * Get list by movie id
+   * @param movieId number
+   * @param theaterId number
+   * @returns Promise<Screening[]>
+   */
+  public async getListByMovieAndTheater(movieId: number, theaterId: number) {
+    let screens = await this.model
+      .query()
+      .where('movieId', movieId)
+      .andWhere('theaterId', theaterId)
+      .preload('movie')
+      .preload('theater', async (query) => {
+        await query.select('*', Database.st().asGeoJSON('location'))
+      })
+
+    screens.forEach(async (screen) => {
+      if (screen.theater.location) {
+        screen.theater.location = await JSON.parse(screen.theater.location)
+      }
+    })
+
+    return screens
   }
 
   /**
@@ -47,7 +95,21 @@ export class ScreeningService {
    * @returns Promise<Screening[]>
    */
   public async getListByMovie(movieId: number) {
-    return this.model.query().where('movieId', movieId).preload('movie')
+    let screens = await this.model
+      .query()
+      .where('movieId', movieId)
+      .preload('movie')
+      .preload('theater', async (query) => {
+        await query.select('*', Database.st().asGeoJSON('location'))
+      })
+
+    screens.forEach(async (screen) => {
+      if (screen.theater.location) {
+        screen.theater.location = await JSON.parse(screen.theater.location)
+      }
+    })
+
+    return screens
   }
 
   /**

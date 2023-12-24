@@ -30,6 +30,11 @@ export default class UpdateTheaterDto {
       .optional([rules.maxLength(2), rules.minLength(2)])
       .members(schema.number()),
     type: schema.number.optional(),
+    timezone: schema.string.optional({ trim: true }, [
+      rules.maxLength(32),
+      rules.minLength(8),
+      rules.regex(/^[a-zA-Z/]+$/),
+    ]),
   })
 
   /**

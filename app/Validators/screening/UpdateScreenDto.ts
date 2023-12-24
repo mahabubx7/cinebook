@@ -29,13 +29,28 @@ export default class UpdateScreenDto {
     startTime: schema.string.optional({ trim: true }, [
       rules.minLength(5),
       rules.maxLength(5),
-      rules.regex(/^[0-9]{2}:[0-9]{2}$/),
+      rules.regex(/^\d{2}:\d{2}$/),
     ]),
     endTime: schema.string.optional({ trim: true }, [
       rules.minLength(5),
       rules.maxLength(5),
-      rules.regex(/^[0-9]{2}:[0-9]{2}$/),
+      rules.regex(/^\d{2}:\d{2}$/),
       rules.afterField('startTime'),
+    ]),
+    bookingStartDate: schema.string.optional({ trim: true }, [
+      rules.maxLength(10),
+      rules.minLength(10),
+      rules.regex(/^\d{4}-\d{2}-\d{2}$/),
+    ]),
+    screeningOpenAt: schema.string.optional({ trim: true }, [
+      rules.maxLength(19),
+      rules.minLength(19),
+      rules.regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/),
+    ]),
+    screeningEndAt: schema.string.optional({ trim: true }, [
+      rules.maxLength(19),
+      rules.minLength(19),
+      rules.regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/),
     ]),
   })
 

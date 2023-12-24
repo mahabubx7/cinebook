@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.integer('vendor_id').notNullable().unsigned().references('id').inTable('users')
       table.integer('type_id').notNullable().unsigned().references('id').inTable('theater_types')
       table.string('name').notNullable()
+      table.string('timezone').defaultTo('Asia/Dhaka') // BD Time Zone
       table.string('address').notNullable()
       table.geometry('location').nullable() // geo location
       table.boolean('is_deleted').defaultTo(false)

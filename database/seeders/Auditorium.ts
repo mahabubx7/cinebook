@@ -20,6 +20,16 @@ export default class extends BaseSeeder {
         theaterId: 1,
         capacity: 200,
       },
+      {
+        name: 'Meteor KH',
+        theaterId: 2,
+        capacity: 50,
+      },
+      {
+        name: 'Star KH',
+        theaterId: 2,
+        capacity: 100,
+      },
     ]).then(() => {
       Logger.info('✅ Seeding Auditoriums are completed!')
     })

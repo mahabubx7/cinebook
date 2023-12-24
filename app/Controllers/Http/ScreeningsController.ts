@@ -14,6 +14,15 @@ export default class ScreeningsController {
     return response.ok(screenings)
   }
 
+  public async getShows({ response, request }: HttpContextContract) {
+    const { movieId, theaterId } = request.qs()
+    if (!movieId || !theaterId) {
+      return response.unprocessableEntity({ message: 'Movie & Theater IDs are required' })
+    }
+    const shows = await this.service.getListByMovieAndTheater(movieId, theaterId)
+    response.ok(shows)
+  }
+
   public async getByUid({ response, params }: HttpContextContract) {
     const screening = await this.service.getByUid(params.uid)
     if (!screening) return response.notFound({ message: 'Screening not found' })

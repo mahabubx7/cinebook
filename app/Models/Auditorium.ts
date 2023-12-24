@@ -1,7 +1,16 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, beforeCreate, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  BelongsTo,
+  ManyToMany,
+  beforeCreate,
+  belongsTo,
+  column,
+  manyToMany,
+} from '@ioc:Adonis/Lucid/Orm'
 import { TokenService } from 'App/Services'
 import Theater from './Theater'
+import Screening from './Screening'
 
 export default class Auditorium extends BaseModel {
   @column({ isPrimary: true })
@@ -29,11 +38,18 @@ export default class Auditorium extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
+  @belongsTo(() => Theater, { foreignKey: 'theaterId' })
+  public theater: BelongsTo<typeof Theater>
+
+  @manyToMany(() => Screening, {
+    pivotTable: 'screen_auditoriums',
+    pivotTimestamps: true,
+    pivotColumns: ['starts_at', 'ends_at', 'price'],
+  })
+  public screenings: ManyToMany<typeof Screening>
+
   @beforeCreate()
   public static async generateUid(auditorium: Auditorium) {
     auditorium.uid = this.name.toLowerCase() + '--' + TokenService.UID(16)
   }
-
-  @belongsTo(() => Theater, { foreignKey: 'theaterId' })
-  public theater: BelongsTo<typeof Theater>
 }

@@ -10,7 +10,15 @@
 |*/
 
 import Database from '@ioc:Adonis/Lucid/Database'
+import CustomException from 'App/Exceptions/CustomException'
 import Auditorium from 'App/Models/Auditorium'
+
+interface AssignShowsParams {
+  shows: number[] // screenings ids
+  prices: number[] // price per show by index
+  starts: string // start dateTime
+  ends: string // end dateTime
+}
 
 export class AuditoriumService {
   constructor(private readonly model = Auditorium) {}
@@ -116,5 +124,48 @@ export class AuditoriumService {
       .update({ isDeleted: true })
       .then(() => true)
       .catch(() => false)
+  }
+
+  /**
+   * Assign shows to Auditorium
+   * @param id number
+   * @param data AssignShowsParams
+   * @returns Promise<boolean>
+   * @throws CustomException | DatabaseError
+   */
+  public async assignShows(id: number, data: AssignShowsParams) {
+    console.info('PARAMS --> ', data)
+    const { shows, prices, starts, ends } = data
+    const pivotData = shows.map((show, index) => {
+      return {
+        screening_id: show,
+        auditorium_id: id,
+        price: prices[index] || undefined,
+        starts_at: starts,
+        ends_at: ends,
+      }
+    })
+
+    const auditorium = await this.model.find(id)
+    if (!auditorium) throw new CustomException('Auditorium not found', 404)
+    return await Database.table('screen_auditoriums')
+      .insert(pivotData)
+      .then(() => true)
+      .catch((err) => {
+        throw err
+      })
+  }
+
+  public async getAuditoriumsByShow(theaterId: number, screeningId: number) {
+    const auditoriums = await this.model
+      .query()
+      .where('is_deleted', false)
+      .andWhereHas('screenings', (query) => {
+        query.where('screening_id', screeningId)
+      })
+      .andWhereHas('theater', (query) => {
+        query.where('theater_id', theaterId)
+      })
+    return auditoriums
   }
 }
