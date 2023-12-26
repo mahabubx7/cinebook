@@ -7,10 +7,10 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('owner_id').notNullable().unsigned().references('id').inTable('users')
-      table.integer('movie_id').notNullable().unsigned().references('id').inTable('movies')
+      table.integer('show_id').notNullable().unsigned().references('id').inTable('screenings')
       table.string('uid').notNullable().unique()
       table.float('price').notNullable()
-      table.boolean('paid').defaultTo(false)
+      table.boolean('is_paid').defaultTo(false)
       table.boolean('is_deleted').defaultTo(false)
 
       /**

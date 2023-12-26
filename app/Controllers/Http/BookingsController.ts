@@ -11,4 +11,10 @@ export default class BookingsController {
     const created = await this.bookingService.create(id, booking)
     return response.created(created)
   }
+
+  public async getPendingBookings({ auth, response }: HttpContextContract) {
+    const { id } = auth.user!
+    const pendingBookings = await this.bookingService.getUserPendingBookings(id)
+    return response.ok(pendingBookings)
+  }
 }

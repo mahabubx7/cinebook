@@ -10,16 +10,7 @@ export default class extends BaseSeeder {
         ownerId: 1,
         showId: 1,
         auditoriumId: 4,
-        date: '2021-12-27',
-        price: 100,
-        status: 'booked',
-      },
-      {
-        seatNumber: '2',
-        ownerId: 1,
-        showId: 1,
-        auditoriumId: 4,
-        date: '2021-12-27',
+        date: '2023-12-27',
         price: 100,
       },
     ]).then(() => {

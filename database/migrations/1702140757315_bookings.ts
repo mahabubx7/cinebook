@@ -9,6 +9,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.integer('owner_id').notNullable().unsigned().references('id').inTable('users')
       table.integer('show_id').notNullable().unsigned().references('id').inTable('screenings')
+      table.integer('ticket_id').nullable().unsigned().references('id').inTable('tickets')
       table
         .integer('auditorium_id')
         .notNullable()
@@ -22,9 +23,9 @@ export default class extends BaseSchema {
       table.boolean('is_deleted').defaultTo(false)
 
       // index
-      // table.index('owner_id', 'booking_owner_index')
-      // table.index('show_id', 'booking_by_show_index')
-      // table.index(['show_id', 'auditorium_id', 'date', 'seat_number'], 'booking_index')
+      table.index('owner_id', 'booking_owner_index')
+      table.index('show_id', 'booking_by_show_index')
+      table.index(['show_id', 'auditorium_id', 'date', 'seat_number'], 'booking_index')
 
       // unique combinations :: show_id + auditorium_id + seat_number + date
       table.unique(['show_id', 'auditorium_id', 'seat_number', 'date'])

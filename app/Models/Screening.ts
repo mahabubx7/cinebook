@@ -2,11 +2,13 @@ import { DateTime } from 'luxon'
 import {
   BaseModel,
   BelongsTo,
+  HasMany,
   ManyToMany,
   beforeCreate,
   beforeSave,
   belongsTo,
   column,
+  hasMany,
   manyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import { TokenService } from 'App/Services/TokenService'
@@ -14,6 +16,7 @@ import Movie from './Movie'
 import Theater from './Theater'
 import CustomException from 'App/Exceptions/CustomException'
 import Auditorium from './Auditorium'
+import Booking from './Booking'
 
 export default class Screening extends BaseModel {
   @column({ isPrimary: true })
@@ -71,6 +74,9 @@ export default class Screening extends BaseModel {
     pivotColumns: ['starts_at', 'ends_at', 'price'],
   })
   public auditoriums: ManyToMany<typeof Auditorium>
+
+  @hasMany(() => Booking, {})
+  public bookings: HasMany<typeof Booking>
 
   @beforeCreate()
   public static async generateUid(screening: Screening) {

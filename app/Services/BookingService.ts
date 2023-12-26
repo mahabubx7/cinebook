@@ -10,7 +10,6 @@
 |*/
 
 import Database from '@ioc:Adonis/Lucid/Database'
-import CustomException from 'App/Exceptions/CustomException'
 import Booking from 'App/Models/Booking'
 
 interface CreateBookParams {
@@ -49,8 +48,7 @@ export class BookingService {
         })),
       ])
       .catch((err) => {
-        console.log(err)
-        throw new CustomException('Error while creating booking', 409)
+        throw err
       })
 
     return bookings
@@ -59,10 +57,19 @@ export class BookingService {
   /**
    * Get one by id
    * @param id number
-   * @returns Promise<Booking>
+   * @returns Promise<Booking | null>
    */
   public async getById(id: number) {
-    return this.model.findOrFail(id)
+    return this.model.find(id)
+  }
+
+  /**
+   * Get all pending bookings
+   * @param userId number
+   * @returns Promise<Booking[]>
+   */
+  public async getUserPendingBookings(userId: number) {
+    return this.model.query().where('owner_id', userId).andWhere('status', 'pending')
   }
 
   /**
