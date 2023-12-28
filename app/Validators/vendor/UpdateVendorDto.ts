@@ -1,7 +1,7 @@
 import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class CreateTodoDto {
+export default class UpdateVendorDto {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,9 +24,10 @@ export default class CreateTodoDto {
    *    ```
    */
   public schema = schema.create({
-    title: schema.string({ trim: true }, [rules.maxLength(100)]),
-    description: schema.string.optional({ trim: true }, [rules.maxLength(255)]),
-    isCompleted: schema.boolean.optional(),
+    phone: schema.string.optional([rules.mobile()]),
+    fname: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
+    middle: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
+    lname: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
   })
 
   /**

@@ -1,7 +1,7 @@
 import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class UpdateTodoDto {
+export default class CreateScreenDto {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,9 +24,36 @@ export default class UpdateTodoDto {
    *    ```
    */
   public schema = schema.create({
-    title: schema.string.optional({ trim: true }, [rules.maxLength(100)]),
-    description: schema.string.optional({ trim: true }, [rules.maxLength(255)]),
-    isCompleted: schema.boolean.optional(),
+    name: schema.string({ trim: true }, [rules.minLength(5), rules.maxLength(100)]),
+    movieId: schema.number(),
+    theaterId: schema.number(),
+    running: schema.boolean.optional(),
+    startTime: schema.string({ trim: true }, [
+      rules.minLength(5),
+      rules.maxLength(5),
+      rules.regex(/^\d{2}:\d{2}$/),
+    ]),
+    endTime: schema.string({ trim: true }, [
+      rules.minLength(5),
+      rules.maxLength(5),
+      rules.regex(/^\d{2}:\d{2}$/),
+      rules.afterField('startTime'),
+    ]),
+    bookingStartDate: schema.string.optional({ trim: true }, [
+      rules.maxLength(10),
+      rules.minLength(10),
+      rules.regex(/^\d{4}-\d{2}-\d{2}$/),
+    ]),
+    screeningOpenAt: schema.string({ trim: true }, [
+      rules.maxLength(19),
+      rules.minLength(19),
+      rules.regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/),
+    ]),
+    screeningEndAt: schema.string({ trim: true }, [
+      rules.maxLength(19),
+      rules.minLength(19),
+      rules.regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/),
+    ]),
   })
 
   /**

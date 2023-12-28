@@ -68,15 +68,20 @@
     "@adonisjs/mail": "^8.2.1",
     "@adonisjs/redis": "^7.3.4",
     "@adonisjs/repl": "^3.1.0",
+    "@adonisjs/session": "^6.4.0",
     "@adonisjs/view": "^6.2.0",
     "adonis-autoswagger": "^1.8.1",
     "knex-postgis": "^0.14.3",
     "luxon": "^3.4.4",
     "mjml": "^4.14.1",
+    "node-fetch": "^3.3.2",
     "pg": "^8.11.3",
     "phc-argon2": "^1.1.4",
     "proxy-addr": "^2.0.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "reflect-metadata": "^0.1.13",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "webpack-node-externals": "^3.0.0"
   }
 }

@@ -52,6 +52,18 @@ export default class ExceptionHandler extends HttpExceptionHandler {
         },
       })
     }
+
+    // database error: unique constraint violation
+    if (error.code === '23505') {
+      return ctx.response.status(406).json({
+        message: 'Duplicate key value violates unique constraint!',
+        error: {
+          summary: error.message,
+          stack: error.stack,
+        },
+      })
+    }
+
     return super.handle(error, ctx)
   }
 }

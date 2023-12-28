@@ -6,9 +6,10 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+      table.string('uid').notNullable().unique()
       table.integer('theater_id').notNullable().unsigned().references('id').inTable('theaters')
       table.string('name').notNullable()
-      table.integer('capacity').notNullable()
+      table.integer('capacity').defaultTo(50)
       table.boolean('is_deleted').defaultTo(false)
 
       /**

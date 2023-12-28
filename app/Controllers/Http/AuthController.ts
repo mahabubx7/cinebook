@@ -30,7 +30,7 @@ export default class AuthController {
     /*-------------------------------------------------------
     | @Auth:  Already authenticated from route => middleware
     *-------------------------------------------------------*/
-    return auth.user
+    return this.userService.getById(auth.user!.id)
   }
 
   /**
@@ -95,10 +95,19 @@ export default class AuthController {
 
     const user = await this.userService.create(payload)
 
-    const token = await auth.use('api').generate(user, {
-      expiresIn: '7 days',
-      ip_address: request.ip(),
-    })
+    const token = await auth.use('api').generate(
+      {
+        email: user.email,
+        password: user.password,
+        role: user.role,
+        // @ts-ignore
+        is_email_verified: user.isEmailVerified,
+      },
+      {
+        expiresIn: '7 days',
+        ip_address: request.ip(),
+      }
+    )
 
     /**
      * @MailService: Send a verification email to user

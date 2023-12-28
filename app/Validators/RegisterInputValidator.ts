@@ -24,6 +24,9 @@ export default class RegisterInputValidator {
    *    ```
    */
   public schema = schema.create({
+    fname: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
+    middle: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
+    lname: schema.string.optional([rules.minLength(3), rules.maxLength(24)]),
     email: schema.string([rules.email()]),
     password: schema.string([rules.minLength(8), rules.maxLength(64), rules.confirmed()]),
   })
