@@ -1,7 +1,8 @@
 import Hash from '@ioc:Adonis/Core/Hash'
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasMany, beforeSave, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import { Role } from 'App/Enums'
+import Theater from './Theater'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -14,11 +15,29 @@ export default class User extends BaseModel {
   public password: string
 
   @column({ serializeAs: null })
+  public fname?: string
+
+  @column({ serializeAs: null })
+  public lname?: string
+
+  @column({ serializeAs: null })
+  public middle?: string
+
+  @column()
+  public phone?: string
+
+  @column({ serializeAs: null })
   // @no-swagger
   public rememberMeToken?: string
 
   @column()
   public isEmailVerified?: boolean
+
+  @column()
+  public isActive?: boolean
+
+  @column()
+  public isDeleted?: boolean
 
   @column()
   // @enum(user, vendor, manager, admin, super_admin)
@@ -36,6 +55,21 @@ export default class User extends BaseModel {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
+  }
+
+  // preload theaters
+  // @no-swagger
+  @hasMany(() => Theater, { foreignKey: 'vendorId' })
+  public theaters: HasMany<typeof Theater>
+
+  // process full name
+  // @no-swagger
+  public get getName() {
+    if (!this.fname && !this.lname) return 'N/A'
+    else if (this.middle) {
+      return this.fname + ' ' + this.middle + ' ' + this.lname
+    }
+    return this.fname + ' ' + this.lname
   }
 
   // check if user is USER | Customer

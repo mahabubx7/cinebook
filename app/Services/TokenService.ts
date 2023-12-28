@@ -71,11 +71,22 @@ export class TokenService {
    * @param len number
    * @returns payload string
    */
-  public static UID(len: number = 16) {
+  public static UID(
+    len: number = 8,
+    { upperCase = false, doubleGen = false }: { upperCase?: boolean; doubleGen?: boolean } = {}
+  ) {
     if (len < 4) len = 4 // minimum length fix
     else if (len > 32) len = 32 // maximum length fix
-    return Math.random()
+    let uid = Math.random()
       .toString(36)
       .substring(2, len + 2)
+    if (doubleGen)
+      uid =
+        uid +
+        Math.random()
+          .toString(36)
+          .substring(2, len + 2)
+    if (upperCase) return uid.toUpperCase()
+    return uid
   }
 }

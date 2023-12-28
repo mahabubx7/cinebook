@@ -21,7 +21,11 @@ export class UserService {
    * @returns Promise<User>
    */
   public async create(user: Partial<User>) {
-    return this.model.create(user)
+    const added = await this.model.create(user)
+    return {
+      name: user?.getName,
+      ...added,
+    }
   }
 
   /**
@@ -30,7 +34,13 @@ export class UserService {
    * @returns Promise<User | null>
    */
   public async getById(id: number) {
-    return this.model.findOrFail(id).catch(() => null)
+    const user = await this.model.find(id)
+    if (!user) return null
+
+    return {
+      name: user?.getName,
+      ...user?.toJSON(),
+    }
   }
 
   /**
@@ -39,7 +49,13 @@ export class UserService {
    * @returns Promise<User | null>
    */
   public async getByEmail(email: string) {
-    return this.model.findByOrFail('email', email).catch(() => null)
+    const user = await this.model.findBy('email', email)
+    if (!user) return null
+
+    return {
+      name: user?.getName,
+      ...user?.toJSON(),
+    }
   }
 
   /**

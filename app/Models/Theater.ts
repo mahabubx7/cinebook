@@ -1,8 +1,18 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, beforeCreate, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  BelongsTo,
+  HasMany,
+  beforeCreate,
+  belongsTo,
+  column,
+  hasMany,
+} from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import TheaterType from './TheaterType'
 import { TokenService } from 'App/Services'
+import Auditorium from './Auditorium'
+import Screening from './Screening'
 
 export default class Theater extends BaseModel {
   @column({ isPrimary: true })
@@ -17,6 +27,9 @@ export default class Theater extends BaseModel {
 
   @column()
   public name: string
+
+  @column()
+  public timezone: string
 
   @column({ serializeAs: null })
   // @no-swagger
@@ -43,6 +56,12 @@ export default class Theater extends BaseModel {
 
   @belongsTo(() => TheaterType, { foreignKey: 'typeId' })
   public type: BelongsTo<typeof TheaterType>
+
+  @hasMany(() => Auditorium, { foreignKey: 'theaterId' })
+  public auditoriums: HasMany<typeof Auditorium>
+
+  @hasMany(() => Screening, { foreignKey: 'theaterId' })
+  public screenings: HasMany<typeof Screening>
 
   @beforeCreate()
   public static async generateUid(theater: Theater) {
