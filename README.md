@@ -97,4 +97,10 @@ Test: @japa # adonisjs uses Japa
 Storage: @adonisjs/drive-s3 # MinIO or AWS S3
 ```
 
+**Movie API usage**
+
+> To fetch movie details: I am using the `TheMovieDB (TMDB)`
+
+Fetch Movie poster image: `https://image.tmdb.org/t/p/w600_and_h900_bestv2/{link}`
+
 > Note: This is a portfolio or prototype based backend api based application with NodeJs-stack. For more info, please contact me @mahabubx7 [`iosmahabub@gmail.com`]

@@ -11,6 +11,8 @@
 
 import Booking from 'App/Models/Booking'
 import Ticket from 'App/Models/Ticket'
+import { MovieService } from './MovieService'
+import Database from '@ioc:Adonis/Lucid/Database'
 
 interface CreateTicketParams {
   ownerId: number
@@ -21,7 +23,13 @@ interface CreateTicketParams {
 export class TicketService {
   constructor(private readonly model = Ticket) {}
 
-  private async processSeatNames(seatsArr: number[], namesArr: string[]) {
+  /**
+   * @private
+   * Processed Seat Names
+   * @param names string[]
+   * @returns Promise<string[]>
+   */
+  private async processSeatNames(namesArr: string[]) {
     const names: Record<string, number[]> = {}
     namesArr.forEach((str) => {
       const match = str.match(/([a-zA-Z\s]+) \((\d+)\)/)
@@ -40,13 +48,16 @@ export class TicketService {
       const nums = names[name].join(',')
       seatNames.push(`${name} (${nums})`)
     }
+
+    return seatNames
   }
 
   /**
    * @private
-   * Get processed Seat Name
+   * Process Seats
    * @param seats number[]
-   * @returns Promise<string[]>
+   * @param onlySeats boolean
+   * @returns Promise<Record<string, any>>
    */
   private async processSeats(seats: number[], { onlySeats = false }: { onlySeats?: boolean } = {}) {
     if (!onlySeats) {
@@ -61,27 +72,10 @@ export class TicketService {
       const seatNamesArr = bookings.map(
         (booking) => `${booking.auditorium.name} (${booking.seatNumber})`
       )
-      const names: Record<string, number[]> = {}
-      seatNamesArr.forEach((str) => {
-        const match = str.match(/([a-zA-Z\s]+) \((\d+)\)/)
-        if (match) {
-          const name = match[1].trim()
-          const seat = parseInt(match[2], 10)
-          if (names[name]) {
-            names[name].push(seat)
-          } else {
-            names[name] = [seat]
-          }
-        }
-      })
-      const seatNames: string[] = []
-      for (const name in names) {
-        const nums = names[name].join(',')
-        seatNames.push(`${name} (${nums})`)
-      }
+      const seatNames = await this.processSeatNames(seatNamesArr)
       const totalPrice = bookings.reduce((total, seat) => total + seat.price, 0)
 
-      return { seatNames, totalPrice }
+      return { seatNames, totalPrice: Math.round(totalPrice) }
     } else {
       const bookings = await Booking.query()
         .whereIn('id', seats)
@@ -93,25 +87,7 @@ export class TicketService {
       const seatNamesArr = bookings.map(
         (booking) => `${booking.auditorium.name} (${booking.seatNumber})`
       )
-      const names: Record<string, number[]> = {}
-      seatNamesArr.forEach((str) => {
-        const match = str.match(/([a-zA-Z\s]+) \((\d+)\)/)
-        if (match) {
-          const name = match[1].trim()
-          const seat = parseInt(match[2], 10)
-          if (names[name]) {
-            names[name].push(seat)
-          } else {
-            names[name] = [seat]
-          }
-        }
-      })
-      const seatNames: string[] = []
-      for (const name in names) {
-        const nums = names[name].join(',')
-        seatNames.push(`${name} (${nums})`)
-      }
-
+      const seatNames = await this.processSeatNames(seatNamesArr)
       return { seatNames }
     }
   }
@@ -156,15 +132,56 @@ export class TicketService {
    * Get one by id
    * @param id number
    * @returns Promise<Ticket | null>
+   * @includes BookingInfo (Seats, Theater, Show)
    */
   public async getById(id: number) {
-    return this.model.find(id)
+    const ticket = await this.model.findBy('id', id)
+    if (!ticket) return null
+    let seats = await Booking.query().where('ticketId', ticket.id).select('id')
+    const { seatNames } = await this.processSeats(
+      seats.map((seat) => seat.id),
+      {
+        onlySeats: true,
+      }
+    )
+    const show = await ticket.related('show').query().first()
+    const movie = await show!.related('movie').query().first()
+    const theater = await show!
+      .related('theater')
+      .query()
+      .select('id', 'name', 'address', 'location', Database.st().asGeoJSON('location'))
+      .first()
+    const movieWithInfo = await new MovieService().getMovieInfo(movie!.tmdbId, movie!)
+    const booking = await Booking.query()
+      .where('ticketId', ticket.id)
+      .andWhere('showId', show!.id)
+      .first()
+    return {
+      ...ticket.toJSON(),
+      bookingInfo: {
+        date: booking!.date,
+        showStartsAt: show!.startTime,
+        showEndsAt: show!.endTime,
+        theater: {
+          id: theater!.id,
+          name: theater!.name,
+          address: theater!.address,
+          location: JSON.parse(theater!.location),
+        },
+        seats: seatNames,
+        movie: {
+          ...movie?.toJSON(),
+          info: movieWithInfo!.info,
+        },
+      },
+    }
   }
 
   /**
    * Get one Ticket by TicketID
    * @param ticketCode string
    * @returns Promise<Ticket | null>
+   * @includes BookingInfo (Seats, Theater, Show)
    */
   public async getByTicketCode(ticketCode: string) {
     const ticket = await this.model.findBy('uid', ticketCode)
@@ -176,9 +193,36 @@ export class TicketService {
         onlySeats: true,
       }
     )
+    const show = await ticket.related('show').query().first()
+    const movie = await show!.related('movie').query().first()
+    const theater = await show!
+      .related('theater')
+      .query()
+      .select('id', 'name', 'address', 'location', Database.st().asGeoJSON('location'))
+      .first()
+    const movieWithInfo = await new MovieService().getMovieInfo(movie!.tmdbId, movie!)
+    const booking = await Booking.query()
+      .where('ticketId', ticket.id)
+      .andWhere('showId', show!.id)
+      .first()
     return {
       ...ticket.toJSON(),
-      seats: seatNames,
+      bookingInfo: {
+        date: booking!.date,
+        showStartsAt: show!.startTime,
+        showEndsAt: show!.endTime,
+        theater: {
+          id: theater!.id,
+          name: theater!.name,
+          address: theater!.address,
+          location: JSON.parse(theater!.location),
+        },
+        seats: seatNames,
+        movie: {
+          ...movie?.toJSON(),
+          info: movieWithInfo!.info,
+        },
+      },
     }
   }
 

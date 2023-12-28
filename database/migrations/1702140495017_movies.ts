@@ -7,11 +7,11 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('uid').notNullable().unique()
-      table.string('imdb').nullable().unique()
+      table.integer('tmdb_id').notNullable().unique()
       table.string('name').notNullable()
       table.string('rated').nullable()
       table.float('rating').nullable().defaultTo(0)
-      table.date('released').notNullable()
+      table.string('released_at').notNullable()
       table.boolean('is_deleted').defaultTo(false)
 
       /**

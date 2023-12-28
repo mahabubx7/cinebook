@@ -17,7 +17,7 @@
 | import './routes/customer'
 |
 */
-
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 import Route from '@ioc:Adonis/Core/Route'
 import AutoSwagger from 'adonis-autoswagger'

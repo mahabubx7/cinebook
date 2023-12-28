@@ -7,9 +7,9 @@ export default class extends BaseSeeder {
   public async run() {
     await Movie.createMany([
       {
-        name: 'Animal (2023)',
-        imdb: 'tt13751694',
-        released: DateTime.now().set({ year: 2023, month: 12, day: 1 }),
+        name: 'Animal (A/18+)',
+        tmdbId: 781732,
+        releasedAt: DateTime.now().set({ year: 2023, month: 12, day: 1 }).toString(),
       },
     ]).then(() => {
       Logger.info('✅ Seeding Movies are completed!')

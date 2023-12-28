@@ -14,7 +14,7 @@ export default class Movie extends BaseModel {
   public name: string
 
   @column()
-  public imdb?: string
+  public tmdbId: number
 
   @column()
   public rated?: string
@@ -23,7 +23,7 @@ export default class Movie extends BaseModel {
   public rating?: number
 
   @column()
-  public released: DateTime
+  public releasedAt: string
 
   @column({ serializeAs: null })
   // @no-swagger
@@ -37,7 +37,8 @@ export default class Movie extends BaseModel {
 
   @beforeCreate()
   public static async generateUid(movie: Movie) {
-    movie.uid = 'mov' + '--' + TokenService.UID(16)
+    const movieName = movie.name.replace(/\s/g, '').toString().split('(')[0]
+    movie.uid = movieName.toLowerCase() + '-' + new Date(movie.releasedAt).getFullYear()
   }
 
   @hasMany(() => Screening, { foreignKey: 'movieId' })
