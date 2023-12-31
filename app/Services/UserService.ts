@@ -21,11 +21,7 @@ export class UserService {
    * @returns Promise<User>
    */
   public async create(user: Partial<User>) {
-    const added = await this.model.create(user)
-    return {
-      name: user?.getName,
-      ...added,
-    }
+    return this.model.create(user)
   }
 
   /**
@@ -38,8 +34,8 @@ export class UserService {
     if (!user) return null
 
     return {
-      name: user?.getName,
-      ...user?.toJSON(),
+      name: user.getName,
+      ...user,
     }
   }
 
@@ -53,8 +49,8 @@ export class UserService {
     if (!user) return null
 
     return {
-      name: user?.getName,
-      ...user?.toJSON(),
+      name: user.getName,
+      ...user.toJSON(),
     }
   }
 

@@ -25,8 +25,11 @@ export default class UpdateMovieDto {
    */
   public schema = schema.create({
     name: schema.string.optional({ trim: true }, [rules.minLength(3), rules.maxLength(100)]),
-    imdb: schema.string.optional({ trim: true }, [rules.minLength(6), rules.maxLength(16)]),
-    released: schema.date.optional({ format: 'yyyy-MM-dd' }),
+    tmdbId: schema.number.optional([
+      rules.unsigned(),
+      rules.unique({ table: 'movies', column: 'tmdb_id' }),
+    ]),
+    releasedAt: schema.date.optional({ format: 'yyyy-MM-dd' }),
     rated: schema.enum.optional(['G', 'PG', 'PG-13', 'R', 'NC-17', 'A', 'UA', 'U', 'NR']),
   })
 

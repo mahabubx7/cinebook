@@ -118,7 +118,21 @@ export class MovieService {
    * @returns Promise<Movie[]> (paginated)
    */
   public async getList({ page = 1, pageLimit = 10 }: { page?: number; pageLimit?: number } = {}) {
-    return this.model.query().preload('screens').paginate(page, pageLimit)
+    const movies = await this.model
+      .query()
+      .preload('screens')
+      .orderBy('released_at', 'desc')
+      .paginate(page, pageLimit)
+    const movieWithInfo: Record<string, any>[] = []
+    for (const movie of movies.toJSON().data) {
+      const movieShows: Record<string, any>[] = movie.screens ?? []
+      const movieData = await this.getMovieInfo(movie.tmdbId, movie.id)
+      movieWithInfo.push({ ...movieData!, shows: movieShows })
+    }
+    return {
+      ...movies.toJSON(),
+      data: movieWithInfo,
+    }
   }
 
   /**
