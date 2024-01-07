@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon'
 import { BaseModel, HasMany, beforeCreate, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
-import { TokenService } from 'App/Services'
 import Screening from './Screening'
 
 export default class Movie extends BaseModel {

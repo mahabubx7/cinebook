@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Movie from 'App/Models/Movie'
 import { MovieService } from 'App/Services'
 import CreateMovieDto from 'App/Validators/movie/CreateMovieDto'
 import UpdateMovieDto from 'App/Validators/movie/UpdateMovieDto'

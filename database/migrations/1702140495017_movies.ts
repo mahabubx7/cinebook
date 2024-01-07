@@ -1,4 +1,5 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+import { Rating } from 'App/Enums'
 
 export default class extends BaseSchema {
   protected tableName = 'movies'
@@ -9,7 +10,7 @@ export default class extends BaseSchema {
       table.string('uid').notNullable().unique()
       table.integer('tmdb_id').notNullable().unique()
       table.string('name').notNullable()
-      table.string('rated').nullable()
+      table.enum('rated', Object.values(Rating)).defaultTo(Rating.UA)
       table.float('rating').nullable().defaultTo(0)
       table.string('released_at').notNullable()
       table.boolean('is_deleted').defaultTo(false)

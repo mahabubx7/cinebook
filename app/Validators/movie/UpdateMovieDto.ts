@@ -29,7 +29,7 @@ export default class UpdateMovieDto {
       rules.unsigned(),
       rules.unique({ table: 'movies', column: 'tmdb_id' }),
     ]),
-    releasedAt: schema.date.optional({ format: 'yyyy-MM-dd' }),
+    releasedAt: schema.string.optional({ trim: true }, [rules.regex(/^\d{4}-\d{2}-\d{2}$/)]),
     rated: schema.enum.optional(['G', 'PG', 'PG-13', 'R', 'NC-17', 'A', 'UA', 'U', 'NR']),
   })
 

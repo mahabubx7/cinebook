@@ -26,7 +26,7 @@ export default class CreateMovieDto {
   public schema = schema.create({
     name: schema.string({ trim: true }, [rules.minLength(3), rules.maxLength(100)]),
     tmdbId: schema.number([rules.unsigned(), rules.unique({ table: 'movies', column: 'tmdb_id' })]),
-    releasedAt: schema.date({ format: 'yyyy-MM-dd' }),
+    releasedAt: schema.string({ trim: true }, [rules.regex(/^\d{4}-\d{2}-\d{2}$/)]),
     rated: schema.enum.optional(['G', 'PG', 'PG-13', 'R', 'NC-17', 'A', 'UA', 'U', 'NR']),
   })
 

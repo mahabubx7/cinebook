@@ -156,7 +156,7 @@ export class AuditoriumService {
       })
   }
 
-  public async getAuditoriumsByShow(theaterId: number, screeningId: number) {
+  public async getAuditoriumsByShow(theaterId: number, screeningId: number, date: string) {
     const auditoriums = await this.model
       .query()
       .where('is_deleted', false)
@@ -166,7 +166,26 @@ export class AuditoriumService {
       .andWhereHas('theater', (query) => {
         query.where('theater_id', theaterId)
       })
-    return auditoriums
+
+    const response: Record<string, any>[] = []
+    for (const auditorium of auditoriums) {
+      const seats = await Database.query()
+        .from('bookings')
+        .where('auditorium_id', auditorium.id)
+        .where('show_id', screeningId)
+        .where('date', date)
+        .count('* as total')
+        .groupBy('status')
+
+      response.push({
+        ...auditorium.toJSON(),
+        seats: {
+          booked: +Number(seats[0]?.total) || 0,
+          available: auditorium.capacity - (+Number(seats[0]?.total) || 0),
+        },
+      })
+    }
+    return response
   }
 
   // get seats information

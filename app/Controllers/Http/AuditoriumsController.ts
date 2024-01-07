@@ -46,13 +46,13 @@ export default class AuditoriumsController {
   }
 
   public async getByShow({ response, request }: HttpContextContract) {
-    const { theaterId, showId } = request.qs()
-    if (!theaterId || !showId) {
+    const { theaterId, showId, date } = request.qs()
+    if (!theaterId || !showId || !date) {
       return response.unprocessableEntity({
-        message: 'Theater and Show both IDs are required',
+        message: 'Theater, Show & Date is required',
       })
     }
-    const auditoriums = await this.service.getAuditoriumsByShow(theaterId, showId)
+    const auditoriums = await this.service.getAuditoriumsByShow(theaterId, showId, date)
     if (!auditoriums) return response.notFound({ message: 'Auditoriums not found' })
     return response.ok(auditoriums)
   }
