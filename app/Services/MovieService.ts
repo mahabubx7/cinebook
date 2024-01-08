@@ -192,13 +192,24 @@ export class MovieService {
         .groupBy('theater_id')
         .countDistinct('theater_id as total')
 
+      let calculatedShows = 0
+      let calculatedTheaters = 0
+      for (const theater of onTheaters) {
+        calculatedShows += +Number(theater.$extras?.shows)
+        calculatedTheaters += +Number(theater.$extras?.total)
+      }
+
       const movieData = await this.getMovieInfo(movie.tmdbId)
       movieWithInfo.push({
         ...movie.toJSON(),
         info: movieData,
-        on_theaters: +Number(onTheaters[0]?.$extras?.total) || 0,
-        total_shows: +Number(onTheaters[0]?.$extras?.shows) || 0,
+        on_theaters: calculatedTheaters || 0,
+        total_shows: calculatedShows || 0,
       })
+
+      // reset
+      calculatedShows = 0
+      calculatedTheaters = 0
     }
 
     const response = {

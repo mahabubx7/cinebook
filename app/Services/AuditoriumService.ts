@@ -175,7 +175,6 @@ export class AuditoriumService {
         .where('show_id', screeningId)
         .where('date', date)
         .count('* as total')
-        .groupBy('status')
 
       response.push({
         ...auditorium.toJSON(),
@@ -192,7 +191,16 @@ export class AuditoriumService {
   public async getSeats(auditoriumId: number, screeningId: number, date: string) {
     const auditorium = await this.model.find(auditoriumId)
     const show = await Database.query().from('screenings').where('id', screeningId).first()
+
     if (!auditorium || !show) return null
+
+    const showAuditorium = await Database.query()
+      .from('screen_auditoriums')
+      .where('auditorium_id', auditoriumId)
+      .where('screening_id', screeningId)
+      .select('price')
+      .first()
+
     const seatCounts = auditorium.capacity
     const seats: Record<string, any>[] = []
     for (let i = 1; i <= seatCounts; i++) {
@@ -207,6 +215,7 @@ export class AuditoriumService {
       seats.push({
         seat_number: i,
         status: seat ? seat.status : 'available',
+        price: showAuditorium.price,
       })
     }
     return seats
