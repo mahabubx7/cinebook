@@ -4,8 +4,10 @@ import { TicketService } from 'App/Services'
 export default class TicketsController {
   constructor(private readonly ticketService: TicketService = new TicketService()) {}
 
-  public async create({ request, auth, response }: HttpContextContract) {
+  public async create({ request, auth, bouncer, response }: HttpContextContract) {
     const { showId, seats } = request.body()
+    await auth.authenticate()
+    await bouncer.with('TicketPolicy').authorize('create')
     const { id } = auth.user!
 
     const ticket = await this.ticketService.create({

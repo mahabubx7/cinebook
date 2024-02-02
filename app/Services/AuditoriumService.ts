@@ -134,7 +134,7 @@ export class AuditoriumService {
    * @throws CustomException | DatabaseError
    */
   public async assignShows(id: number, data: AssignShowsParams) {
-    console.info('PARAMS --> ', data)
+    // console.info('PARAMS --> ', data)
     const { shows, prices, starts, ends } = data
     const pivotData = shows.map((show, index) => {
       return {

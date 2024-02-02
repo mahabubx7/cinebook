@@ -46,13 +46,19 @@ export class VendorService {
         query.preload('type', (query) => query.select(['id', 'name']))
       })
       .first()
+
+    if (!vendor) return null
+
     // parse location
     vendor?.theaters.forEach((theater: Theater) => {
       theater.location = JSON.parse(theater.location)
     })
+
+    const vendorName = vendor?.getName
+
     return {
-      name: vendor?.getName,
-      ...vendor?.toJSON(),
+      name: vendorName,
+      ...vendor.toJSON(),
     }
   }
 
