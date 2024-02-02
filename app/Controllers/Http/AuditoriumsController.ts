@@ -15,8 +15,9 @@ export default class AuditoriumsController {
     return response.ok(auditoriums)
   }
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, bouncer, response }: HttpContextContract) {
     const payload = await request.validate(CreateAuditoriumDto)
+    await bouncer.with('AuditoriumPolicy').authorize('create')
     const auditorium = await this.service.create(payload)
     return response.created(auditorium)
   }
@@ -33,26 +34,29 @@ export default class AuditoriumsController {
     return response.ok(auditorium)
   }
 
-  public async assignShows({ response, params, request }: HttpContextContract) {
+  public async assignShows({ response, params, bouncer, request }: HttpContextContract) {
     const payload = await request.validate(AssignShowsDto)
-    const auditorium = await this.service.assignShows(params.id, {
+    const auditorium = await this.service.getById(params.id)
+    if (!auditorium) return response.notFound({ message: 'Auditorium not found' })
+    await bouncer.with('AuditoriumPolicy').authorize('update', auditorium)
+    const assign = await this.service.assignShows(auditorium.id, {
       shows: payload.shows.split(',').map((show) => parseInt(show)),
       prices: payload.prices.split(',').map((price) => parseFloat(price)),
       starts: payload.starts,
       ends: payload.ends,
     })
-    if (!auditorium) return response.unprocessableEntity({ message: 'Shows attaching failed!' })
+    if (!assign) return response.unprocessableEntity({ message: 'Shows attaching failed!' })
     return response.accepted({ message: 'Shows are attached to the auditorium!' })
   }
 
   public async getByShow({ response, request }: HttpContextContract) {
-    const { theaterId, showId } = request.qs()
-    if (!theaterId || !showId) {
+    const { theaterId, showId, date } = request.qs()
+    if (!theaterId || !showId || !date) {
       return response.unprocessableEntity({
-        message: 'Theater and Show both IDs are required',
+        message: 'Theater, Show & Date is required',
       })
     }
-    const auditoriums = await this.service.getAuditoriumsByShow(theaterId, showId)
+    const auditoriums = await this.service.getAuditoriumsByShow(theaterId, showId, date)
     if (!auditoriums) return response.notFound({ message: 'Auditoriums not found' })
     return response.ok(auditoriums)
   }
@@ -68,16 +72,20 @@ export default class AuditoriumsController {
     response.ok(seats)
   }
 
-  public async update({ request, response, params }: HttpContextContract) {
+  public async update({ request, response, bouncer, params }: HttpContextContract) {
     const payload = await request.validate(UpdateAuditoriumDto)
-    const auditorium = await this.service.update(params.id, payload)
-    if (!auditorium) return response.notFound({ message: "Auditorium couldn't be updated!" })
+    const auditorium = await this.service.getById(params.id)
+    if (!auditorium) return response.notFound({ message: 'Auditorium not found' })
+    await bouncer.with('AuditoriumPolicy').authorize('update', auditorium)
+    const updates = await this.service.update(params.id, payload)
+    if (!updates) return response.notFound({ message: "Auditorium couldn't be updated!" })
     return response.accepted({ message: 'Auditorium updated successfully!' })
   }
 
-  public async destroy({ response, params }: HttpContextContract) {
-    const auditorium = await this.service.delete(params.id)
-    if (!auditorium) return response.notFound({ message: "Auditorium couldn't be deleted!" })
+  public async destroy({ response, bouncer, params }: HttpContextContract) {
+    await bouncer.with('AuditoriumPolicy').authorize('delete')
+    const remove = await this.service.delete(params.id)
+    if (!remove) return response.notFound({ message: "Auditorium couldn't be deleted!" })
     return response.accepted({ message: 'Auditorium deleted successfully!' })
   }
 }

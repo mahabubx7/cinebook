@@ -9,4 +9,6 @@ Route.group(() => {
   Route.post('/', 'ScreeningsController.create')
   Route.put('/:id', 'ScreeningsController.update')
   Route.delete('/:id', 'ScreeningsController.destroy')
-}).prefix('screen')
+})
+  .prefix('screen')
+  .middleware('auth')

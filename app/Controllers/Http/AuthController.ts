@@ -95,19 +95,10 @@ export default class AuthController {
 
     const user = await this.userService.create(payload)
 
-    const token = await auth.use('api').generate(
-      {
-        email: user.email,
-        password: user.password,
-        role: user.role,
-        // @ts-ignore
-        is_email_verified: user.isEmailVerified,
-      },
-      {
-        expiresIn: '7 days',
-        ip_address: request.ip(),
-      }
-    )
+    const token = await auth.use('api').generate(user, {
+      expiresIn: '7 days',
+      ip_address: request.ip(),
+    })
 
     /**
      * @MailService: Send a verification email to user
@@ -115,12 +106,15 @@ export default class AuthController {
      * @Params: name string [I didn't have 'name' field so I passed email as name]
      * @Params: expiresIn string [optional]
      */
-    await MailService.sendEmailVerification(user.email, user.email) // send email verification
+    await MailService.sendEmailVerification(user.email, user.getName) // send email verification
 
     return response.created({
       message: 'User registered successfully!',
       token,
-      user,
+      user: {
+        ...user,
+        name: user.getName,
+      },
     })
   }
 

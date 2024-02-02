@@ -8,6 +8,7 @@ export default class TheatersController {
 
   // Create a new Theater
   public async addTheater({ request, auth, bouncer, response }: HttpContextContract) {
+    await auth.authenticate()
     await bouncer.with('TheaterPolicy').authorize('create')
     const theater = await request.validate(CreateTheaterDto)
     const { id } = auth.user!
@@ -16,7 +17,8 @@ export default class TheatersController {
   }
 
   // Update a Theater
-  public async updateTheater({ request, bouncer, response }: HttpContextContract) {
+  public async updateTheater({ request, auth, bouncer, response }: HttpContextContract) {
+    await auth.authenticate()
     const body = await request.validate(UpdateTheaterDto)
     const { id } = request.param('id')
     const theater = await this.service.getById(id)
@@ -60,7 +62,8 @@ export default class TheatersController {
   }
 
   // Delete a Theater
-  public async deleteTheater({ request, bouncer, response }: HttpContextContract) {
+  public async deleteTheater({ request, bouncer, auth, response }: HttpContextContract) {
+    await auth.authenticate()
     const theater = await this.service.getById(request.param('id'))
     if (!theater) {
       return response.notFound({ errors: [{ message: 'Theater not found!' }] })

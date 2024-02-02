@@ -10,4 +10,6 @@ Route.group(() => {
   Route.get('/uid/:uid', 'AuditoriumsController.show')
   Route.get('/:id', 'AuditoriumsController.getById')
   Route.get('/', 'AuditoriumsController.index')
-}).prefix('auditorium')
+})
+  .prefix('auditorium')
+  .middleware('auth')

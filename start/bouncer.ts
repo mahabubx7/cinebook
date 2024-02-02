@@ -56,4 +56,10 @@ export const { actions } = Bouncer
 */
 export const { policies } = Bouncer.registerPolicies({
   TheaterPolicy: () => import('App/Policies/TheaterPolicy'), // <--- Theater Access Policy
+  ScreeningPolicy: () => import('App/Policies/ScreeningPolicy'), // <--- Screening Access Policy
+  BookingPolicy: () => import('App/Policies/BookingPolicy'), // <--- Booking Access Policy
+  TicketPolicy: () => import('App/Policies/TicketPolicy'), // <--- Ticket Access Policy
+  AuditoriumPolicy: () => import('App/Policies/AuditoriumPolicy'), // <--- Auditorium Access Policy
+  MoviePolicy: () => import('App/Policies/MoviePolicy'), // <--- Movie Access Policy
+  VendorPolicy: () => import('App/Policies/VendorPolicy'), // <--- Vendor Access Policy
 })

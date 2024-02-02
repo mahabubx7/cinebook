@@ -134,7 +134,7 @@ export class AuditoriumService {
    * @throws CustomException | DatabaseError
    */
   public async assignShows(id: number, data: AssignShowsParams) {
-    console.info('PARAMS --> ', data)
+    // console.info('PARAMS --> ', data)
     const { shows, prices, starts, ends } = data
     const pivotData = shows.map((show, index) => {
       return {
@@ -156,7 +156,7 @@ export class AuditoriumService {
       })
   }
 
-  public async getAuditoriumsByShow(theaterId: number, screeningId: number) {
+  public async getAuditoriumsByShow(theaterId: number, screeningId: number, date: string) {
     const auditoriums = await this.model
       .query()
       .where('is_deleted', false)
@@ -166,14 +166,41 @@ export class AuditoriumService {
       .andWhereHas('theater', (query) => {
         query.where('theater_id', theaterId)
       })
-    return auditoriums
+
+    const response: Record<string, any>[] = []
+    for (const auditorium of auditoriums) {
+      const seats = await Database.query()
+        .from('bookings')
+        .where('auditorium_id', auditorium.id)
+        .where('show_id', screeningId)
+        .where('date', date)
+        .count('* as total')
+
+      response.push({
+        ...auditorium.toJSON(),
+        seats: {
+          booked: +Number(seats[0]?.total) || 0,
+          available: auditorium.capacity - (+Number(seats[0]?.total) || 0),
+        },
+      })
+    }
+    return response
   }
 
   // get seats information
   public async getSeats(auditoriumId: number, screeningId: number, date: string) {
     const auditorium = await this.model.find(auditoriumId)
     const show = await Database.query().from('screenings').where('id', screeningId).first()
+
     if (!auditorium || !show) return null
+
+    const showAuditorium = await Database.query()
+      .from('screen_auditoriums')
+      .where('auditorium_id', auditoriumId)
+      .where('screening_id', screeningId)
+      .select('price')
+      .first()
+
     const seatCounts = auditorium.capacity
     const seats: Record<string, any>[] = []
     for (let i = 1; i <= seatCounts; i++) {
@@ -188,6 +215,7 @@ export class AuditoriumService {
       seats.push({
         seat_number: i,
         status: seat ? seat.status : 'available',
+        price: showAuditorium.price,
       })
     }
     return seats

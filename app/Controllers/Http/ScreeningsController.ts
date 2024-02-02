@@ -43,22 +43,29 @@ export default class ScreeningsController {
     return response.ok(screening)
   }
 
-  public async create({ request, response }: HttpContextContract) {
+  public async create({ request, bouncer, response }: HttpContextContract) {
     const payload = await request.validate(CreateScreenDto)
+    await bouncer.with('ScreeningPolicy').authorize('create')
     const screening = await this.service.create(payload)
     return response.created(screening)
   }
 
-  public async update({ request, response, params }: HttpContextContract) {
+  public async update({ request, bouncer, response, params }: HttpContextContract) {
     const payload = await request.validate(UpdateScreenDto)
-    const screening = await this.service.update(params.id, payload)
-    if (!screening) return response.notFound({ message: "Screening couldn't be updated!" })
+    const screen = await this.service.getById(params.id)
+    if (!screen) return response.notFound({ message: "Screening couldn't be found!" })
+    await bouncer.with('ScreeningPolicy').authorize('update', screen)
+    const updates = await this.service.update(params.id, payload)
+    if (!updates) return response.badRequest({ message: "Screening couldn't be updated!" })
     return response.accepted({ message: 'Screening updated successfully!' })
   }
 
-  public async destroy({ response, params }: HttpContextContract) {
+  public async destroy({ response, bouncer, params }: HttpContextContract) {
+    const screen = await this.service.getById(params.id)
+    if (!screen) return response.notFound({ message: "Screening couldn't be found!" })
+    await bouncer.with('ScreeningPolicy').authorize('delete', screen)
     const screening = await this.service.delete(params.id)
-    if (!screening) return response.notFound({ message: "Screening couldn't be deleted!" })
+    if (!screening) return response.badRequest({ message: "Screening couldn't be deleted!" })
     return response.accepted({ message: 'Screening deleted successfully!' })
   }
 }
