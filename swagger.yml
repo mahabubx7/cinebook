@@ -1,419 +1,1447 @@
-openapi: '3.0.0'
+openapi: "3.0.0"
 info:
-  title: 'AdonisJs (demo) API Documentation'
-  version: '1.0.0'
+  title: "AdonisJs (demo) API Documentation"
+  version: "1.0.0"
 components:
   responses:
     Forbidden:
-      description: 'Access token is missing or invalid'
+      description: "Access token is missing or invalid"
     Accepted:
-      description: 'The request was accepted'
+      description: "The request was accepted"
     Created:
-      description: 'The resource has been created'
+      description: "The resource has been created"
     NotFound:
-      description: 'The resource has been created'
+      description: "The resource has been created"
     NotAcceptable:
-      description: 'The resource has been created'
+      description: "The resource has been created"
   securitySchemes:
     BearerAuth:
-      type: 'http'
-      scheme: 'bearer'
+      type: "http"
+      scheme: "bearer"
   schemas:
     Any:
-      description: 'Any JSON object not defined as schema'
-    Todo:
-      type: 'object'
+      description: "Any JSON object not defined as schema"
+    Auditorium:
+      type: "object"
       properties:
         id:
-          type: 'number'
-          example: 995
-        title:
-          type: 'string'
-          example: 'Lorem Ipsum'
-        is_completed:
-          type: 'boolean'
-          example: true
-        description:
-          type: 'string'
-          example: 'Lorem ipsum dolor sit amet'
-        user:
-          $ref: '#/components/schemas/User'
-          example: 'string'
+          type: "number"
+          example: 562
+        uid:
+          type: "string"
+          example: "string"
+        name:
+          type: "string"
+          example: "John Doe"
+        theater_id:
+          type: "number"
+          example: 26
+        capacity:
+          type: "number"
+          example: 221
         created_at:
-          type: 'string'
-          example: '2021-03-23T16:13:08.489+01:00'
-          format: 'date-time'
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
         updated_at:
-          type: 'string'
-          example: '2021-03-23T16:13:08.489+01:00'
-          format: 'date-time'
-        owner_id:
-          type: 'string'
-          example: 'string'
-      description: 'Model'
-    User:
-      type: 'object'
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        theater:
+          $ref: "#/components/schemas/Theater"
+          example: "string"
+        screenings:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Screening"
+            example: "string"
+      description: "Model"
+    Booking:
+      type: "object"
       properties:
         id:
-          type: 'number'
-          example: 396
+          type: "number"
+          example: 757
+        uid:
+          type: "string"
+          example: "string"
+        show_id:
+          type: "number"
+          example: 390
+        auditorium_id:
+          type: "number"
+          example: 23
+        owner_id:
+          type: "number"
+          example: 648
+        ticket_id:
+          type: "number"
+          example: 444
+        seat_number:
+          type: "string"
+          example: "string"
+        price:
+          type: "number"
+          example: 10.5
+        date:
+          type: "string"
+          example: "string"
+        status:
+          type: "string"
+          example: "string"
+        created_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        auditorium:
+          $ref: "#/components/schemas/Auditorium"
+          example: "string"
+        owner:
+          $ref: "#/components/schemas/User"
+          example: "string"
+        show:
+          $ref: "#/components/schemas/Screening"
+          example: "string"
+        ticket:
+          $ref: "#/components/schemas/Ticket"
+          example: "string"
+      description: "Model"
+    Movie:
+      type: "object"
+      properties:
+        id:
+          type: "number"
+          example: 958
+        uid:
+          type: "string"
+          example: "string"
+        name:
+          type: "string"
+          example: "John Doe"
+        tmdb_id:
+          type: "number"
+          example: 110
+        rated:
+          type: "string"
+          example: "string"
+        rating:
+          type: "number"
+          example: 756
+        released_at:
+          type: "string"
+          example: "string"
+        created_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        screens:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Screening"
+            example: "string"
+      description: "Model"
+    Screening:
+      type: "object"
+      properties:
+        id:
+          type: "number"
+          example: 936
+        uid:
+          type: "string"
+          example: "string"
+        movie_id:
+          type: "number"
+          example: 92
+        theater_id:
+          type: "number"
+          example: 883
+        name:
+          type: "string"
+          example: "John Doe"
+        running:
+          type: "boolean"
+          example: true
+        start_time:
+          type: "string"
+          example: "string"
+        end_time:
+          type: "string"
+          example: "string"
+        booking_start_date:
+          type: "string"
+          example: "string"
+        screening_open_at:
+          type: "string"
+          example: "string"
+        screening_end_at:
+          type: "string"
+          example: "string"
+        created_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        movie:
+          $ref: "#/components/schemas/Movie"
+          example: "string"
+        theater:
+          $ref: "#/components/schemas/Theater"
+          example: "string"
+        auditoriums:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Auditorium"
+            example: "string"
+        bookings:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Booking"
+            example: "string"
+      description: "Model"
+    Theater:
+      type: "object"
+      properties:
+        id:
+          type: "number"
+          example: 842
+        uid:
+          type: "string"
+          example: "string"
+        name:
+          type: "string"
+          example: "John Doe"
+        timezone:
+          type: "string"
+          example: "string"
+        address:
+          type: "string"
+          example: "1028 Farland Street"
+        location:
+          $ref: "#/components/schemas/any"
+          example: "string"
+        created_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        owner:
+          $ref: "#/components/schemas/User"
+          example: "string"
+        type:
+          $ref: "#/components/schemas/TheaterType"
+          example: "string"
+        auditoriums:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Auditorium"
+            example: "string"
+        screenings:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Screening"
+            example: "string"
+      description: "Model"
+    TheaterType:
+      type: "object"
+      properties:
+        id:
+          type: "number"
+          example: 239
+        name:
+          type: "string"
+          example: "John Doe"
+        created_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+      description: "Model"
+    Ticket:
+      type: "object"
+      properties:
+        id:
+          type: "number"
+          example: 757
+        uid:
+          type: "string"
+          example: "string"
+        owner_id:
+          type: "number"
+          example: 847
+        show_id:
+          type: "number"
+          example: 102
+        price:
+          type: "number"
+          example: 10.5
+        is_paid:
+          type: "boolean"
+          example: true
+        created_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        owner:
+          $ref: "#/components/schemas/User"
+          example: "string"
+        seats:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Booking"
+            example: "string"
+        show:
+          $ref: "#/components/schemas/Screening"
+          example: "string"
+      description: "Model"
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "number"
+          example: 921
         email:
-          type: 'string'
-          example: 'johndoe@example.com'
-          format: 'email'
+          type: "string"
+          example: "johndoe@example.com"
+          format: "email"
+        phone:
+          type: "string"
+          example: "string"
         is_email_verified:
-          type: 'boolean'
+          type: "boolean"
+          example: true
+        is_active:
+          type: "boolean"
+          example: true
+        is_deleted:
+          type: "boolean"
           example: true
         role:
-          type: 'string'
-          example: 'user'
+          type: "string"
+          example: "user"
           enum:
-            - 'user'
-            - 'auditor'
-            - 'admin'
-            - 'super_admin'
-        todos:
-          type: 'array'
-          items:
-            $ref: '#/components/schemas/Todo'
-            example: 'string'
+            - "user"
+            - "vendor"
+            - "manager"
+            - "admin"
+            - "super_admin"
         created_at:
-          type: 'string'
-          example: '2021-03-23T16:13:08.489+01:00'
-          format: 'date-time'
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
         updated_at:
-          type: 'string'
-          example: '2021-03-23T16:13:08.489+01:00'
-          format: 'date-time'
-      description: 'Model'
+          type: "string"
+          example: "2021-03-23T16:13:08.489+01:00"
+          format: "date-time"
+        theaters:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Theater"
+            example: "string"
+      description: "Model"
 paths:
-  /uploads/*:
-    get:
-      summary: ' (route.ts)'
-      description: ''
-      parameters: []
-      tags: []
-      responses:
-        200:
-          description: 'OK'
-          content:
-            application/json: {}
-      security: []
   /api/v1/auth/login:
     post:
-      summary: ' (AuthController::login)'
-      description: ''
+      summary: " (AuthController::login)"
+      description: ""
       parameters: []
       tags:
-        - 'AUTH'
+        - "AUTH"
       responses:
         202:
           content:
             application/json:
               schema:
-                type: 'object'
+                type: "object"
               example:
-                message: 'string'
+                message: "string"
                 token:
-                  type: 'bearer'
-                  token: 'string'
-                  expiresIn: 'string'
-          description: 'Accepted: {"message":"string","token":{"type":"bearer","token":"string","expiresIn":"string"}}'
+                  type: "bearer"
+                  token: "string"
+                  expiresIn: "string"
+          description: "Accepted: {\"message\":\"string\",\"token\":{\"type\":\"bearer\",\"token\":\"string\",\"expiresIn\":\"string\"}}"
         400:
           content:
             application/json:
               schema:
-                type: 'object'
+                type: "object"
               example:
                 errors:
-                  message: 'error_message'
-          description: 'Bad Request: {"errors": {"message": "error_message"}}'
+                  - message: "error_message"
+          description: "Bad Request: {\"errors\": [{\"message\": \"error_message\"}]}"
       security: []
       requestBody:
         content:
           application/json:
             schema:
-              type: 'object'
+              type: "object"
             example:
-              email: 'john.doe@gmail.com'
-              password: 'xxxxxxxx'
+              email: "john.doe@gmail.com"
+              password: "xxxxxxxx"
   /api/v1/auth/register:
     post:
-      summary: ' (AuthController::register)'
-      description: ''
+      summary: " (AuthController::register)"
+      description: "Created: {\"message\":\"string\",\"token\":{\"type\":\"bearer\",\"token\":\"string\",\"expiresIn\":\"string\"},\"user\": {\"id\":1,\"email\":\"john.doe@gmail.com\",\"is_email_verified\":false,\"role\":\"user\",\"created_at\":\"2021-09-30T06:59:59.000Z\",\"updated_at\":\"2021-09-30T06:59:59.000Z\"}}"
       parameters: []
       tags:
-        - 'AUTH'
+        - "AUTH"
       responses:
         201:
-          description: 'Created'
-          content:
-            application/json: {}
-      security: []
-      requestBody:
-        content:
-          application/json: {}
-  /api/v1/auth/logout:
-    delete:
-      summary: ' (AuthController::logout)'
-      description: ''
-      parameters: []
-      tags:
-        - 'AUTH'
-      responses:
-        202:
-          description: 'Accepted'
-          content:
-            application/json: {}
-      security: []
-  /api/v1/auth/whoami:
-    get:
-      summary: ' (AuthController::whoAmI)'
-      description: 'Returns a **single** instance of type `User` **without** any _relations_. Take a look at the example for further details.'
-      parameters: []
-      tags:
-        - 'AUTH'
-      responses:
-        200:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: "object"
               example:
-                id: 396
-                email: 'johndoe@example.com'
-                is_email_verified: true
-                role: 'user'
-                created_at: '2021-03-23T16:13:08.489+01:00'
-                updated_at: '2021-03-23T16:13:08.489+01:00'
-          description: 'Returns a **single** instance of type `User` **without** any _relations_. Take a look at the example for further details.'
-        401:
+                message: "string"
+                token:
+                  type: "bearer"
+                  token: "string"
+                  expiresIn: "string"
+                user:
+                  id: 1
+                  email: "john.doe@gmail.com"
+                  is_email_verified: false
+                  role: "user"
+                  created_at: "2021-09-30T06:59:59.000Z"
+                  updated_at: "2021-09-30T06:59:59.000Z"
+          description: "Created: {\"message\":\"string\",\"token\":{\"type\":\"bearer\",\"token\":\"string\",\"expiresIn\":\"string\"},\"user\": {\"id\":1,\"email\":\"john.doe@gmail.com\",\"is_email_verified\":false,\"role\":\"user\",\"created_at\":\"2021-09-30T06:59:59.000Z\",\"updated_at\":\"2021-09-30T06:59:59.000Z\"}}"
+        400:
           content:
             application/json:
               schema:
-                type: 'object'
+                type: "object"
               example:
                 errors:
-                  message: 'error_message'
-          description: 'Unauthorized: {"errors": {"message": "error_message"}}'
+                  - message: "error_message"
+          description: "Bad Request: {\"errors\": [{\"message\": \"error_message\"}]}"
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+            example:
+              email: "john.doe@gmail.com"
+              password: "xxxxxxxx"
+  /api/v1/auth/whoami:
+    get:
+      summary: " (AuthController::whoAmI)"
+      description: "Returns a **single** instance of type `User` **without** any _relations_. Take a look at the example for further details."
+      parameters: []
+      tags:
+        - "AUTH"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+              example:
+                id: 921
+                email: "johndoe@example.com"
+                phone: "string"
+                is_email_verified: true
+                is_active: true
+                is_deleted: true
+                role: "user"
+                created_at: "2021-03-23T16:13:08.489+01:00"
+                updated_at: "2021-03-23T16:13:08.489+01:00"
+          description: "Returns a **single** instance of type `User` **without** any _relations_. Take a look at the example for further details."
+        401:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Unauthorized: {\"errors\": [{\"message\": \"error_message\"}]}"
         403:
-          description: 'Forbidden'
+          description: "Forbidden"
       security:
         - BearerAuth:
-            - 'access'
+            - "access"
+  /api/v1/auth/logout:
+    delete:
+      summary: " (AuthController::logout)"
+      description: "Accepted: {\"message\":\"string\",\"revoked\":true}"
+      parameters: []
+      tags:
+        - "AUTH"
+      responses:
+        202:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                message: "string"
+                revoked: true
+          description: "Accepted: {\"message\":\"string\",\"revoked\":true}"
+        401:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Unauthorized: {\"errors\": [{\"message\": \"error_message\"}]}"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
   /api/v1/auth/password/change:
     put:
-      summary: ' (AuthController::changePassword)'
-      description: ''
+      summary: " (AuthController::changePassword)"
+      description: ""
       parameters: []
       tags:
-        - 'AUTH'
+        - "AUTH"
       responses:
+        202:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                message: "string"
+          description: "Accepted: {\"message\":\"string\"}"
+        400:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Bad Request: {\"errors\": [{\"message\": \"error_message\"}]}"
         401:
-          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Unauthorized: {\"errors\": [{\"message\": \"error_message\"}]}"
         403:
-          description: 'Forbidden'
+          description: "Forbidden"
       security:
         - BearerAuth:
-            - 'access'
+            - "access"
       requestBody:
         content:
-          application/json: {}
+          application/json:
+            schema:
+              type: "object"
+            example:
+              current: "xxxxxxxx"
+              password: "xxxxxxxx"
+              confirm: "xxxxxxxx"
   /api/v1/auth/password/forgot:
     post:
-      summary: ' (AuthController::forgotPassword)'
-      description: ''
+      summary: " (AuthController::forgotPassword)"
+      description: ""
       parameters: []
       tags:
-        - 'AUTH'
+        - "AUTH"
       responses:
-        201:
-          description: 'Created'
+        200:
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: "object"
+              example:
+                message: "string"
+          description: "OK: {\"message\":\"string\"}"
+        422:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Unprocessable Entity: {\"errors\": [{\"message\": \"error_message\"}]}"
       security: []
       requestBody:
         content:
-          application/json: {}
+          application/json:
+            schema:
+              type: "object"
+            example:
+              email: "john.doe@gmail.com"
   /api/v1/auth/password/reset:
     put:
-      summary: ' (AuthController::resetPassword)'
-      description: ''
+      summary: " (AuthController::resetPassword)"
+      description: ""
       parameters: []
       tags:
-        - 'AUTH'
+        - "AUTH"
       responses:
-        204:
-          description: 'No Content'
+        202:
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: "object"
+              example:
+                message: "string"
+          description: "Accepted: {\"message\":\"string\"}"
+        400:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Bad Request: {\"errors\": [{\"message\": \"error_message\"}]}"
+        500:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Internal Server Error: {\"errors\": [{\"message\": \"error_message\"}]}"
       security: []
       requestBody:
         content:
-          application/json: {}
+          application/json:
+            schema:
+              type: "object"
+            example:
+              otp: "123456"
+              password: "xxxxxxxx"
+              confirm: "xxxxxxxx"
   /api/v1/auth/verify/email:
     post:
-      summary: ' (AuthController::verifyEmail)'
-      description: ''
+      summary: " (AuthController::verifyEmail)"
+      description: ""
       parameters: []
       tags:
-        - 'AUTH'
+        - "AUTH"
       responses:
-        201:
-          description: 'Created'
+        202:
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: "object"
+              example:
+                message: "string"
+          description: "Accepted: {\"message\":\"string\"}"
+        400:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Bad Request: {\"errors\": [{\"message\": \"error_message\"}]}"
+        500:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Internal Server Error: {\"errors\": [{\"message\": \"error_message\"}]}"
       security: []
       requestBody:
         content:
-          application/json: {}
+          application/json:
+            schema:
+              type: "object"
+            example:
+              otp: "123456"
   /api/v1/auth/verify/resend:
     post:
-      summary: ' (AuthController::resendEmailVerify)'
-      description: ''
+      summary: " (AuthController::resendEmailVerify)"
+      description: ""
       parameters: []
       tags:
-        - 'AUTH'
+        - "AUTH"
       responses:
-        201:
-          description: 'Created'
+        200:
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: "object"
+              example:
+                message: "string"
+          description: "OK: {\"message\":\"string\"}"
+        422:
+          content:
+            application/json:
+              schema:
+                type: "object"
+              example:
+                errors:
+                  - message: "error_message"
+          description: "Unprocessable Entity: {\"errors\": [{\"message\": \"error_message\"}]}"
       security: []
       requestBody:
         content:
-          application/json: {}
-  /api/v1/todo:
+          application/json:
+            schema:
+              type: "object"
+            example:
+              email: "john.doe@gmail.com"
+  /api/v1/theater:
     post:
-      summary: ' (TodosController::createTodo)'
-      description: ''
+      summary: " (TheatersController::addTheater)"
+      description: ""
       parameters: []
       tags:
-        - 'TODO'
+        - "THEATER"
       responses:
         401:
-          description: 'Unauthorized'
+          description: "Unauthorized"
         403:
-          description: 'Forbidden'
+          description: "Forbidden"
       security:
         - BearerAuth:
-            - 'access'
+            - "access"
       requestBody:
         content:
           application/json: {}
     get:
-      summary: ' (TodosController::getTodos)'
-      description: ''
+      summary: " (TheatersController::getNearbyTheaters)"
+      description: ""
       parameters: []
       tags:
-        - 'TODO'
+        - "THEATER"
       responses:
-        401:
-          description: 'Unauthorized'
-        403:
-          description: 'Forbidden'
-      security:
-        - BearerAuth:
-            - 'access'
-  /api/v1/todo/{id}:
-    get:
-      summary: ' (TodosController::getTodo)'
-      description: ''
-      parameters:
-        - in: 'path'
-          name: 'id'
-          schema:
-            type: 'string'
-          required: true
-      tags:
-        - 'TODO'
-      responses:
-        401:
-          description: 'Unauthorized'
-        403:
-          description: 'Forbidden'
-      security:
-        - BearerAuth:
-            - 'access'
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
+  /api/v1/theater/{id}:
     put:
-      summary: ' (TodosController::updateTodo)'
-      description: ''
+      summary: " (TheatersController::updateTheater)"
+      description: ""
       parameters:
-        - in: 'path'
-          name: 'id'
+        - in: "path"
+          name: "id"
           schema:
-            type: 'string'
+            type: "string"
           required: true
       tags:
-        - 'TODO'
+        - "THEATER"
       responses:
         401:
-          description: 'Unauthorized'
+          description: "Unauthorized"
         403:
-          description: 'Forbidden'
+          description: "Forbidden"
       security:
         - BearerAuth:
-            - 'access'
+            - "access"
       requestBody:
         content:
           application/json: {}
     delete:
-      summary: ' (TodosController::deleteTodo)'
-      description: ''
+      summary: " (TheatersController::deleteTheater)"
+      description: ""
       parameters:
-        - in: 'path'
-          name: 'id'
+        - in: "path"
+          name: "id"
           schema:
-            type: 'string'
+            type: "string"
           required: true
       tags:
-        - 'TODO'
+        - "THEATER"
       responses:
         401:
-          description: 'Unauthorized'
+          description: "Unauthorized"
         403:
-          description: 'Forbidden'
+          description: "Forbidden"
       security:
         - BearerAuth:
-            - 'access'
+            - "access"
+    get:
+      summary: " (TheatersController::getTheaterInfo)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "THEATER"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
+  /api/v1/theater/vendor/{id}:
+    get:
+      summary: " (TheatersController::getTheatersByVendor)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "THEATER"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
+  /api/v1/vendor/apply:
+    post:
+      summary: " (VendorsController::create)"
+      description: ""
+      parameters: []
+      tags:
+        - "VENDOR"
+      responses:
+        201:
+          description: "Created"
+          content:
+            application/json: {}
+      security: []
+      requestBody:
+        content:
+          application/json: {}
+  /api/v1/vendor/{id}:
+    put:
+      summary: "Update vendor (VendorsController::update)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "VENDOR"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+    delete:
+      summary: " (VendorsController::delete)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "VENDOR"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+    get:
+      summary: " (VendorsController::getById)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "VENDOR"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
+  /api/v1/vendor:
+    get:
+      summary: " (VendorsController::getVendors)"
+      description: ""
+      parameters: []
+      tags:
+        - "VENDOR"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
+  /api/v1/auditorium:
+    post:
+      summary: " (AuditoriumsController::store)"
+      description: ""
+      parameters: []
+      tags:
+        - "AUDITORIUM"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+    get:
+      summary: "Add a new theater (AuditoriumsController::index)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "theaterId"
+          description: "Id of the Theater"
+          schema:
+            example: "string"
+            type: "string"
+          required: true
+      tags:
+        - "AUDITORIUM"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/v1/auditorium/{id}/attach:
+    post:
+      summary: " (AuditoriumsController::assignShows)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "AUDITORIUM"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+  /api/v1/auditorium/{id}:
+    put:
+      summary: "Update auditorium (AuditoriumsController::update)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "AUDITORIUM"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+    delete:
+      summary: "Delete auditorium (AuditoriumsController::destroy)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "AUDITORIUM"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+    get:
+      summary: " (AuditoriumsController::getById)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "AUDITORIUM"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/v1/auditorium/screen:
+    get:
+      summary: " (AuditoriumsController::getByShow)"
+      description: ""
+      parameters: []
+      tags:
+        - "AUDITORIUM"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/v1/auditorium/seats:
+    get:
+      summary: " (AuditoriumsController::getSeats)"
+      description: ""
+      parameters: []
+      tags:
+        - "AUDITORIUM"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/v1/auditorium/uid/{uid}:
+    get:
+      summary: "Get a single instance of auditorium (AuditoriumsController::show)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "uid"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "AUDITORIUM"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/v1/movie:
+    get:
+      summary: "Get a list of movie (MoviesController::index)"
+      description: ""
+      parameters: []
+      tags:
+        - "MOVIE"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
+    post:
+      summary: " (MoviesController::store)"
+      description: ""
+      parameters: []
+      tags:
+        - "MOVIE"
+      responses:
+        201:
+          description: "Created"
+          content:
+            application/json: {}
+      security: []
+      requestBody:
+        content:
+          application/json: {}
+  /api/v1/movie/{id}:
+    get:
+      summary: "Get a single instance of movie (MoviesController::show)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "MOVIE"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
+    put:
+      summary: "Update movie (MoviesController::update)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "MOVIE"
+      responses:
+        204:
+          description: "No Content"
+          content:
+            application/json: {}
+      security: []
+      requestBody:
+        content:
+          application/json: {}
+    delete:
+      summary: "Delete movie (MoviesController::destroy)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "MOVIE"
+      responses:
+        202:
+          description: "Accepted"
+          content:
+            application/json: {}
+      security: []
+  /api/v1/movie/uid/{uid}:
+    get:
+      summary: " (MoviesController::getByUid)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "uid"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "MOVIE"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
+  /api/v1/screen:
+    get:
+      summary: "Get a list of screen (ScreeningsController::index)"
+      description: ""
+      parameters: []
+      tags:
+        - "SCREEN"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+    post:
+      summary: " (ScreeningsController::create)"
+      description: ""
+      parameters: []
+      tags:
+        - "SCREEN"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+  /api/v1/screen/shows:
+    get:
+      summary: " (ScreeningsController::getShows)"
+      description: ""
+      parameters: []
+      tags:
+        - "SCREEN"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/v1/screen/show/{id}:
+    get:
+      summary: " (ScreeningsController::getShowDetails)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "SCREEN"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/v1/screen/{id}:
+    get:
+      summary: " (ScreeningsController::getById)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "SCREEN"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+    put:
+      summary: "Update screen (ScreeningsController::update)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "SCREEN"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+    delete:
+      summary: "Delete screen (ScreeningsController::destroy)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "id"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "SCREEN"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/v1/screen/uid/{uid}:
+    get:
+      summary: " (ScreeningsController::getByUid)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "uid"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "SCREEN"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+  /api/v1/booking:
+    post:
+      summary: " (BookingsController::create)"
+      description: ""
+      parameters: []
+      tags:
+        - "BOOKING"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+  /api/v1/booking/pending:
+    get:
+      summary: " (BookingsController::getPendingBookings)"
+      description: ""
+      parameters: []
+      tags:
+        - "BOOKING"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+        - BearerAuth:
+            - "access"
+  /api/v1/ticket:
+    post:
+      summary: " (TicketsController::create)"
+      description: ""
+      parameters: []
+      tags:
+        - "TICKET"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
+      requestBody:
+        content:
+          application/json: {}
+  /api/v1/ticket/{ticketCode}:
+    get:
+      summary: " (TicketsController::getOneTicket)"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "ticketCode"
+          schema:
+            type: "string"
+          required: true
+      tags:
+        - "TICKET"
+      responses:
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+      security:
+        - BearerAuth:
+            - "access"
   /api/health:
     get:
-      summary: ' (route.ts)'
-      description: ''
+      summary: " (route.ts)"
+      description: ""
       parameters: []
       tags: []
       responses:
         200:
-          description: 'OK'
+          description: "OK"
           content:
             application/json: {}
       security: []
-  /api/docs.yml:
+  /api:
     get:
-      summary: ' (route.ts)'
-      description: ''
+      summary: " (route.ts)"
+      description: ""
       parameters: []
       tags: []
       responses:
         200:
-          description: 'OK'
-          content:
-            application/json: {}
-      security: []
-  /api/docs:
-    get:
-      summary: ' (route.ts)'
-      description: ''
-      parameters: []
-      tags: []
-      responses:
-        200:
-          description: 'OK'
+          description: "OK"
           content:
             application/json: {}
       security: []
 tags:
-  - name: 'AUTH'
-    description: 'Everything related to AUTH'
-  - name: 'TODO'
-    description: 'Everything related to TODO'
+  - name: "AUTH"
+    description: "Everything related to AUTH"
+  - name: "THEATER"
+    description: "Everything related to THEATER"
+  - name: "VENDOR"
+    description: "Everything related to VENDOR"
+  - name: "AUDITORIUM"
+    description: "Everything related to AUDITORIUM"
+  - name: "MOVIE"
+    description: "Everything related to MOVIE"
+  - name: "SCREEN"
+    description: "Everything related to SCREEN"
+  - name: "BOOKING"
+    description: "Everything related to BOOKING"
+  - name: "TICKET"
+    description: "Everything related to TICKET"

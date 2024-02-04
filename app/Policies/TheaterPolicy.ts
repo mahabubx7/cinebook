@@ -4,7 +4,7 @@ import Theater from 'App/Models/Theater'
 
 export default class TheaterPolicy extends BasePolicy {
   public async before(user: User, action: string) {
-    if ((user.isAdmin || user.isSuperAdmin) && ['create'].includes(action)) return true
+    if ((user.isAdmin || user.isSuperAdmin) && !['create'].includes(action)) return true
   }
 
   public async create(user: User) {
