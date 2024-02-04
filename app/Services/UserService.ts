@@ -35,7 +35,7 @@ export class UserService {
 
     return {
       name: user.getName,
-      ...user,
+      ...(user.serialize() as User),
     }
   }
 
@@ -47,10 +47,9 @@ export class UserService {
   public async getByEmail(email: string) {
     const user = await this.model.findBy('email', email)
     if (!user) return null
-
     return {
       name: user.getName,
-      ...user.toJSON(),
+      ...(user.serialize() as User),
     }
   }
 

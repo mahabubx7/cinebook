@@ -14,6 +14,8 @@ test.group('User', (group) => {
   // User: create a user
   test('user: should create a user', async ({ assert }) => {
     const user = await userService.create({
+      fname: 'tFirstName',
+      lname: 'tLastName',
       email: 'service@email.com',
       password: 'password',
     }) // <--- Create a user
@@ -29,11 +31,12 @@ test.group('User', (group) => {
   // User: find a user (by Id)
   test('user: should find a user (by Id)', async ({ assert }) => {
     const user = await userService.create({
+      fname: 'idFirstName',
+      lname: 'idLastName',
       email: 'userId@email.com',
       password: 'password',
     }) // <--- Created a user first
     const findUser = await userService.getById(user.id) // <--- Find user by ID
-
     // checks
     assert.notEqual(user, null) // <--- User cannot be null
     assert.exists(findUser!.id) // <--- User has ID
@@ -42,6 +45,8 @@ test.group('User', (group) => {
   // User: find a user (by Email)
   test('user: should find a user (by Email)', async ({ assert }) => {
     const user = await userService.create({
+      fname: 'eFirstName',
+      lname: 'eLastName',
       email: 'mail@email.com',
       password: 'password',
     }) // <--- Created a user first
@@ -49,6 +54,6 @@ test.group('User', (group) => {
 
     // checks
     assert.notEqual(user, null) // <--- User cannot be null
-    assert.strictEqual(findUser!.email, user.email) // <--- User has email
+    assert.strictEqual(findUser!.email as string, user.email) // <--- User has email
   })
 })

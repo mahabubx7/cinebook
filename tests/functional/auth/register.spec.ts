@@ -15,6 +15,8 @@ test.group('register', async (group) => {
     const mailer = Mail.fake() // <-- Fake mailer
 
     const response = await client.post(apiPrefix + '/auth/register').form({
+      fname: 'tFirstName',
+      lname: 'tLastName',
       email: 'testing@user.com',
       password: '12345678',
       password_confirmation: '12345678', // required for validation

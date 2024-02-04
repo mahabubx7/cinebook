@@ -6,8 +6,12 @@ coverage
 # OS & Others
 .vscode
 .DS_STORE
-.env
 tmp
+
+# Environment variables
+.env
+.env.*
+!.env.example
 
 # Custom
 !templates/*
