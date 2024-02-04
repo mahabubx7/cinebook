@@ -4,7 +4,7 @@ import User from 'App/Models/User'
 
 export default class TicketPolicy extends BasePolicy {
   public async before(user: User, action: string) {
-    if ((user.isAdmin || user.isSuperAdmin) && ['create'].includes(action)) return true
+    if ((user.isAdmin || user.isSuperAdmin) && !['create'].includes(action)) return true
   }
 
   public async create(user: User) {

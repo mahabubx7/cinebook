@@ -8,6 +8,11 @@ import UpdateAuditoriumDto from 'App/Validators/auditorium/UpdateAuditoriumDto'
 export default class AuditoriumsController {
   constructor(private readonly service = new AuditoriumService()) {}
 
+  /**
+   * @index
+   * @summary Add a new theater
+   * @paramPath theaterId - Id of the Theater
+   */
   public async index({ response, request }: HttpContextContract) {
     const { theaterId } = request.qs()
     if (!theaterId) return response.unprocessableEntity({ message: 'Theater ID is required' })
