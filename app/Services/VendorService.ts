@@ -26,7 +26,7 @@ export class VendorService {
     const vendor = await this.model.create({ ...payload, role: Role.VENDOR })
     return {
       name: vendor?.getName,
-      ...vendor?.toJSON(),
+      ...(vendor.serialize() as User),
     }
   }
 
@@ -58,7 +58,7 @@ export class VendorService {
 
     return {
       name: vendorName,
-      ...vendor.toJSON(),
+      ...(vendor.serialize() as User),
     }
   }
 
@@ -81,7 +81,7 @@ export class VendorService {
       })
       return {
         name: vendor.getName,
-        ...vendor.toJSON(),
+        ...(vendor.serialize() as User),
       }
     })
     return vendors
