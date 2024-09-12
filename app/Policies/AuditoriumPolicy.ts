@@ -4,11 +4,7 @@ import User from 'App/Models/User'
 
 export default class AuditoriumPolicy extends BasePolicy {
   public async before(user: User, action: string) {
-    console.log('Meta Data :=> ', {
-      user,
-      action,
-    })
-    if ((user.isAdmin || user.isSuperAdmin) && ['create'].includes(action)) return true
+    if ((user.isAdmin || user.isSuperAdmin) && !['create'].includes(action)) return true
   }
 
   public async create(user: User) {
