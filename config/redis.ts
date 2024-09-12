@@ -40,7 +40,7 @@ export default redisConfig({
       port: Env.get('REDIS_PORT'),
       password: Env.get('REDIS_PASSWORD', ''),
       db: 0,
-      keyPrefix: 'adonis_',
+      keyPrefix: 'cinebook_api_',
       healthCheck: true,
     },
   },

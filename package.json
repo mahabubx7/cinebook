@@ -8,6 +8,7 @@
     "postbuild": "cp swagger.yml build/",
     "start": "node server.js",
     "test": "node ace test",
+    "setup:test": "sh ./scripts/postgis.sh && NODE_ENV=test node ace db:wipe",
     "lint": "eslint . --ext=.ts",
     "lint:fix": "eslint . --ext=.ts --fix",
     "format": "prettier --write .",
